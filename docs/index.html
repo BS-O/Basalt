@@ -1,0 +1,83 @@
+---
+layout: default
+title: Basalt OS · 自研 x86-64 内核
+---
+
+# Basalt
+
+**玄武岩——地壳之下最坚实的那层石头。**
+
+Basalt 是一个从裸机开始构建的自研 x86-64 内核（教学/研究项目）。
+C++17 子集 + C + 汇编三语言分层，Limine 引导程序负责固件初始化，
+内核自身代码从 64 位长模式入口开始。
+
+<span class="badge ok">M0 已达成 ✅</span>
+<span class="badge">Limine v12.10.0</span>
+<span class="badge">x86-64</span>
+<span class="badge">C++17 / C11 / GNU as</span>
+<span class="badge">WSL2 + QEMU</span>
+
+## M0 实拍
+
+以下是当前里程碑的真实 QEMU 运行截图：Limine 设置 1024×768 图形模式后，
+内核通过 framebuffer 绘制 Terminus 8×16 字形，输出 `hello world`（同时 COM1
+串口输出 `12Khello world` 供自动化验证）。
+
+![M0 实拍：QEMU framebuffer 输出 hello world](assets/m0-screendump.png)
+<p class="caption">QEMU -M pc · framebuffer 主显示 · 左上角黑底白字，随后内核 cli;hlt 静默停机（预期行为）</p>
+
+## 引导链路
+
+```
+BIOS/UEFI → Limine 引导程序（固件初始化、16位→32位→64位长模式、页表、ELF 装载）
+                │  跳入内核 ELF 入口（已是 64 位长模式）
+                ▼
+        boot/x86/entry64.S   串口探针 '1' → 切自建栈 → 探针 '2'
+                │  rdi = framebuffer 请求指针
+                ▼
+        kernel/kmain.cpp     探针 'K' → console 初始化 → "hello world" → cli;hlt
+```
+
+## 三秒上手
+
+```bash
+cd /mnt/d/Basalt     # WSL2 Debian
+make && make iso     # 字模生成 → 内核 ELF → ISO + BIOS 引导记录
+make run             # QEMU 窗口目视 hello world
+make check           # headless 冒烟：断言 COM1 → CHECK PASSED
+```
+
+## 工程亮点
+
+<div class="card">
+<strong>输出抽象层</strong> —— 架构无关的 console 多 sink 设计：framebuffer 主显示 +
+COM1 调试串口双通道，一次 <code>console::write</code> 同写两路；arm64 将来提供自己的 sink。
+</div>
+
+<div class="card">
+<strong>自动化验证</strong> —— <code>make check</code> headless 冒烟 + QEMU 监视器
+screendump/寄存器/异常日志三板斧，全程无需人工盯屏幕即可定位引导故障。
+</div>
+
+<div class="card">
+<strong>决策记录</strong> —— 从引导协议选型到 arm64 占位，六个关键决策全部落档 ADR-001~006，
+含 Multiboot2 → Limine 的任务书修订对照。
+</div>
+
+<div class="card">
+<strong>配额治理</strong> —— 开源组件登记制：Limine 头文件（BSD-2）+ Terminus 字模（OFL 1.1），
+合计 &lt;2%，上限 25%；vendored 原始包带 SHA256 校验记录。
+</div>
+
+## 文档导航
+
+| 文档 | 内容 | 入口 |
+|---|---|---|
+| **项目详细指南** | 每一个文件的用途、使用方法、构建系统、排障经验 | [在线阅读](PROJECT-GUIDE/) |
+| 架构设计 | 分层、目录、引导链路、M0 踩坑记录 | [GitHub 上查看](https://github.com/BS-O/Basalt/blob/main/docs/ARCHITECTURE.md) |
+| 任务书 v2 | 引导协议修订对照（Multiboot2 → Limine） | [GitHub 上查看](https://github.com/BS-O/Basalt/blob/main/docs/TASK-SPEC.md) |
+| 决策记录 | ADR-001 ~ ADR-006 | [GitHub 上查看](https://github.com/BS-O/Basalt/tree/main/docs/adr) |
+| 源码仓库 | 全部代码与构建脚本 | [github.com/BS-O/Basalt](https://github.com/BS-O/Basalt) |
+
+> 范围纪律：M0 = 能启动 + 输出 hello world。进程、文件系统、网络、驱动等完整内核功能
+> 一律不在当前里程碑，arm64 仅做占位预留。

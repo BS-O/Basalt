@@ -1,0 +1,9 @@
+# Jekyll configuration for Basalt GitHub Pages (docs/ as site root)
+title: Basalt OS
+description: >-
+  自研 x86-64 内核：Limine 引导，M0 已在 framebuffer 与串口上输出 hello world
+lang: zh-CN
+permalink: pretty
+markdown: kramdown
+exclude:
+  - adr/
