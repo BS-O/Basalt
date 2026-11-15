@@ -4,17 +4,15 @@ title: Basalt · 从裸机到 hello world 的自研内核
 permalink: /
 ---
 
-<!-- ============ hero band（奶油画布） ============ -->
+<!-- ============ hero band ============ -->
 <section class="hero">
   <div class="wrap">
     <span class="hero-badge"><span class="dot"></span>Milestone M0 · 已达成</span>
     <h1 class="display-xl">从裸机开始，<em>亲手点亮</em>一块屏幕。</h1>
-    <p class="hero-sub">Basalt（玄武岩——地壳之下最坚实的那层石头）是一个自研 x86-64 内核的教学研究项目：
-    不借助现成内核框架，用 C++17 子集、C 与汇编三种语言逐层搭建，Limine 负责固件初始化，
-    内核自身代码从 64 位长模式入口开始，直至在 framebuffer 上画出第一个字符。</p>
+    <p class="hero-sub">Basalt（玄武岩——地壳之下最坚实的那层石头）是一个自研 x86-64 内核的教学研究项目：不借助现成内核框架，用 C++17 子集、C 与汇编三种语言逐层搭建，Limine 负责固件初始化，内核自身代码从 64 位长模式入口开始，直至在 framebuffer 上画出第一个字符。</p>
     <div class="hero-cta">
-      <a class="btn btn-primary" href="{{ '/PROJECT-GUIDE/' | relative_url }}">阅读项目指南</a>
-      <a class="btn btn-secondary" href="{{ '/readme/' | relative_url }}">查看 README</a>
+      <a class="btn btn-primary" href="/Basalt/PROJECT-GUIDE/">阅读项目指南</a>
+      <a class="btn btn-secondary" href="/Basalt/readme/">查看 README</a>
       <a class="btn btn-secondary" href="https://github.com/BS-O/Basalt">GitHub 仓库</a>
     </div>
     <div class="hero-meta">
@@ -27,16 +25,15 @@ permalink: /
   </div>
 </section>
 
-<!-- ============ dark band：M0 实拍 + 终端输出（暗色产品表面） ============ -->
+<!-- ============ dark band：M0 实拍 + 终端输出 ============ -->
 <section class="band-dark">
   <div class="wrap">
     <h2 class="display-lg">M0：启动，然后说出第一句话</h2>
-    <p class="lead">Limine 完成 16 位 → 32 位 → 64 位长模式的全部固件初始化；Basalt 的第一行汇编从长模式入口开始：
-    自建栈、收集 framebuffer，交给 C++ 的 kmain —— 随后屏幕被点亮。</p>
+    <p class="lead">Limine 完成 16 位 → 32 位 → 64 位长模式的全部固件初始化；Basalt 的第一行汇编从长模式入口开始：自建栈、收集 framebuffer，交给 C++ 的 kmain —— 随后屏幕被点亮。</p>
     <div class="dark-grid">
       <figure class="mockup" style="margin:0">
         <div class="chrome"><span class="dots"><i></i><i></i><i></i></span> QEMU · SeaBIOS → Limine → basalt.elf</div>
-        <img src="{{ 'assets/m0-screendump.png' | relative_url }}" alt="M0 实拍：QEMU framebuffer 输出 hello world">
+        <img src="assets/m0-screendump.png" alt="M0 实拍：QEMU framebuffer 输出 hello world">
       </figure>
       <div class="code-window">
         <div class="chrome"><span class="dots"><i></i><i></i><i></i></span> headless 冒烟 · COM1 串口日志</div>
@@ -65,20 +62,17 @@ permalink: /
       <div class="feature-card">
         <span class="num">01</span>
         <h3>三语言严格分层</h3>
-        <p>汇编只做入口桩，C 守住硬件边界，C++ 只出现在子系统层。跨语言一律 extern "C"，
-        单向依赖，层间边界即 ABI 边界——每一层都能单独讲清楚。</p>
+        <p>汇编只做入口桩，C 守住硬件边界，C++ 只出现在子系统层。跨语言一律 extern "C"，单向依赖，层间边界即 ABI 边界——每一层都能单独讲清楚。</p>
       </div>
       <div class="feature-card">
         <span class="num">02</span>
         <h3>headless 可验证</h3>
-        <p>make check 十五秒冒烟断言串口输出；QEMU 监视器 screendump / 寄存器 / 异常日志
-        三板斧定位引导故障——全程无需人工盯屏。M0 的三个引导协议坑就是这么抓出来的。</p>
+        <p>make check 十五秒冒烟断言串口输出；QEMU 监视器 screendump / 寄存器 / 异常日志三板斧定位引导故障——全程无需人工盯屏。M0 的三个引导协议坑就是这么抓出来的。</p>
       </div>
       <div class="feature-card">
         <span class="num">03</span>
         <h3>决策全部留痕</h3>
-        <p>引导协议为何从 Multiboot2 改为 Limine、字模为何选 Terminus、arm64 为何只占位——
-        六条 ADR 逐条记录背景、备选与后果，文档即站点的治理方式。</p>
+        <p>引导协议为何从 Multiboot2 改为 Limine、字模为何选 Terminus、arm64 为何只占位——六条 ADR 逐条记录背景、备选与后果，文档即站点的治理方式。</p>
       </div>
     </div>
   </div>
@@ -104,13 +98,13 @@ permalink: /
     <h2 class="display-md">从这里开始读</h2>
     <p class="lead">四份入口文档，覆盖"是什么 / 怎么跑 / 为什么 / 下一步"。</p>
     <div class="doc-grid">
-      <a class="doc-tile" href="{{ '/readme/' | relative_url }}">
+      <a class="doc-tile" href="/Basalt/readme/">
         <span class="kind">README</span>
         <h3>README</h3>
         <p>仓库门面：三秒上手、构建与验证命令、目录速览。</p>
         <span class="go">阅读 →</span>
       </a>
-      <a class="doc-tile" href="{{ '/PROJECT-GUIDE/' | relative_url }}">
+      <a class="doc-tile" href="/Basalt/PROJECT-GUIDE/">
         <span class="kind">GUIDE</span>
         <h3>项目详细指南</h3>
         <p>每一个文件的用途与用法、构建系统逐项解释、排障三板斧、扩展怎么做。</p>
@@ -139,7 +133,7 @@ permalink: /
     <p>三条命令：构建 → 跑起来 → 自动验证。一切发生在模拟器里，不动宿主机一根毫毛。</p>
     <div class="hero-cta">
       <a class="btn btn-cream" href="https://github.com/BS-O/Basalt">克隆仓库</a>
-      <a class="btn btn-cream" href="{{ '/PROJECT-GUIDE/' | relative_url }}">先读指南</a>
+      <a class="btn btn-cream" href="/Basalt/PROJECT-GUIDE/">先读指南</a>
     </div>
   </div>
 </section>
