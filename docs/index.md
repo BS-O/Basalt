@@ -7,9 +7,7 @@ title: Basalt OS · 自研 x86-64 内核
 
 **玄武岩——地壳之下最坚实的那层石头。**
 
-Basalt 是一个从裸机开始构建的自研 x86-64 内核（教学/研究项目）。
-C++17 子集 + C + 汇编三语言分层，Limine 引导程序负责固件初始化，
-内核自身代码从 64 位长模式入口开始。
+Basalt 是一个从裸机开始构建的自研 x86-64 内核（教学/研究项目）。C++17 子集 + C + 汇编三语言分层，Limine 引导程序负责固件初始化，内核自身代码从 64 位长模式入口开始。
 
 <span class="badge ok">M0 已达成 ✅</span>
 <span class="badge">Limine v12.10.0</span>
@@ -19,11 +17,10 @@ C++17 子集 + C + 汇编三语言分层，Limine 引导程序负责固件初始
 
 ## M0 实拍
 
-以下是当前里程碑的真实 QEMU 运行截图：Limine 设置 1024×768 图形模式后，
-内核通过 framebuffer 绘制 Terminus 8×16 字形，输出 `hello world`（同时 COM1
-串口输出 `12Khello world` 供自动化验证）。
+以下是当前里程碑的真实 QEMU 运行截图：Limine 设置 1024×768 图形模式后，内核通过 framebuffer 绘制 Terminus 8×16 字形，输出 `hello world`（同时 COM1 串口输出 `12Khello world` 供自动化验证）。
 
 ![M0 实拍：QEMU framebuffer 输出 hello world](assets/m0-screendump.png)
+
 <p class="caption">QEMU -M pc · framebuffer 主显示 · 左上角黑底白字，随后内核 cli;hlt 静默停机（预期行为）</p>
 
 ## 引导链路
@@ -50,23 +47,19 @@ make check           # headless 冒烟：断言 COM1 → CHECK PASSED
 ## 工程亮点
 
 <div class="card">
-<strong>输出抽象层</strong> —— 架构无关的 console 多 sink 设计：framebuffer 主显示 +
-COM1 调试串口双通道，一次 <code>console::write</code> 同写两路；arm64 将来提供自己的 sink。
+<strong>输出抽象层</strong> —— 架构无关的 console 多 sink 设计：framebuffer 主显示 + COM1 调试串口双通道，一次 <code>console::write</code> 同写两路；arm64 将来提供自己的 sink。
 </div>
 
 <div class="card">
-<strong>自动化验证</strong> —— <code>make check</code> headless 冒烟 + QEMU 监视器
-screendump/寄存器/异常日志三板斧，全程无需人工盯屏幕即可定位引导故障。
+<strong>自动化验证</strong> —— <code>make check</code> headless 冒烟 + QEMU 监视器 screendump/寄存器/异常日志三板斧，全程无需人工盯屏幕即可定位引导故障。
 </div>
 
 <div class="card">
-<strong>决策记录</strong> —— 从引导协议选型到 arm64 占位，六个关键决策全部落档 ADR-001~006，
-含 Multiboot2 → Limine 的任务书修订对照。
+<strong>决策记录</strong> —— 从引导协议选型到 arm64 占位，六个关键决策全部落档 ADR-001~006，含 Multiboot2 → Limine 的任务书修订对照。
 </div>
 
 <div class="card">
-<strong>配额治理</strong> —— 开源组件登记制：Limine 头文件（BSD-2）+ Terminus 字模（OFL 1.1），
-合计 &lt;2%，上限 25%；vendored 原始包带 SHA256 校验记录。
+<strong>配额治理</strong> —— 开源组件登记制：Limine 头文件（BSD-2）+ Terminus 字模（OFL 1.1），合计 &lt;2%，上限 25%；vendored 原始包带 SHA256 校验记录。
 </div>
 
 ## 文档导航
@@ -79,5 +72,4 @@ screendump/寄存器/异常日志三板斧，全程无需人工盯屏幕即可�
 | 决策记录 | ADR-001 ~ ADR-006 | [GitHub 上查看](https://github.com/BS-O/Basalt/tree/main/docs/adr) |
 | 源码仓库 | 全部代码与构建脚本 | [github.com/BS-O/Basalt](https://github.com/BS-O/Basalt) |
 
-> 范围纪律：M0 = 能启动 + 输出 hello world。进程、文件系统、网络、驱动等完整内核功能
-> 一律不在当前里程碑，arm64 仅做占位预留。
+> 范围纪律：M0 = 能启动 + 输出 hello world。进程、文件系统、网络、驱动等完整内核功能一律不在当前里程碑，arm64 仅做占位预留。
