@@ -1,0 +1,7 @@
+build/
+legacy/
+third_party/vendored/
+third_party/limine/limine
+third_party/terminus/terminus_font.h
+.acl-recovery/
+*.log
