@@ -5,5 +5,9 @@ description: >-
 lang: zh-CN
 permalink: pretty
 markdown: kramdown
+kramdown:
+  input: GFM
+  parse_block_html: true
 exclude:
   - adr/
+  - assets/*.ppm

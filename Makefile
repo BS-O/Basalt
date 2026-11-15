@@ -42,11 +42,15 @@ vpath %.c   boot/limine arch/x86/console lib/kstd
 vpath %.cpp kernel kernel/console
 vpath %.S   boot/x86
 
-.PHONY: all iso run check font clean
+.PHONY: all iso run check font site clean
 
 all: $(KERNEL)
 
 font: $(FONT)
+
+# sync README.md into the GitHub Pages embed copy (commit the result)
+site:
+	bash tools/sync-readme-embed.sh
 
 $(FONT): third_party/terminus/ter-u16n.bdf tools/genfont.py
 	python3 tools/genfont.py $< $@

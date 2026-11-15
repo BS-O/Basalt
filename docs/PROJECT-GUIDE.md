@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 title: Basalt 项目详细指南
 ---
 

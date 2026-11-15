@@ -1,75 +1,145 @@
 ---
 layout: default
-title: Basalt OS · 自研 x86-64 内核
+title: Basalt · 从裸机到 hello world 的自研内核
+permalink: /
 ---
 
-# Basalt
+<!-- ============ hero band（奶油画布） ============ -->
+<section class="hero">
+  <div class="wrap">
+    <span class="hero-badge"><span class="dot"></span>Milestone M0 · 已达成</span>
+    <h1 class="display-xl">从裸机开始，<em>亲手点亮</em>一块屏幕。</h1>
+    <p class="hero-sub">Basalt（玄武岩——地壳之下最坚实的那层石头）是一个自研 x86-64 内核的教学研究项目：
+    不借助现成内核框架，用 C++17 子集、C 与汇编三种语言逐层搭建，Limine 负责固件初始化，
+    内核自身代码从 64 位长模式入口开始，直至在 framebuffer 上画出第一个字符。</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="{{ '/PROJECT-GUIDE/' | relative_url }}">阅读项目指南</a>
+      <a class="btn btn-secondary" href="{{ '/readme/' | relative_url }}">查看 README</a>
+      <a class="btn btn-secondary" href="https://github.com/BS-O/Basalt">GitHub 仓库</a>
+    </div>
+    <div class="hero-meta">
+      <span class="badge-pill">x86-64</span>
+      <span class="badge-pill">C++17 / C11 / GNU as</span>
+      <span class="badge-pill">Limine v12.10.0 · base rev 3</span>
+      <span class="badge-pill">WSL2 + QEMU</span>
+      <span class="badge-teal"><b>●</b> make check 全绿</span>
+    </div>
+  </div>
+</section>
 
-**玄武岩——地壳之下最坚实的那层石头。**
+<!-- ============ dark band：M0 实拍 + 终端输出（暗色产品表面） ============ -->
+<section class="band-dark">
+  <div class="wrap">
+    <h2 class="display-lg">M0：启动，然后说出第一句话</h2>
+    <p class="lead">Limine 完成 16 位 → 32 位 → 64 位长模式的全部固件初始化；Basalt 的第一行汇编从长模式入口开始：
+    自建栈、收集 framebuffer，交给 C++ 的 kmain —— 随后屏幕被点亮。</p>
+    <div class="dark-grid">
+      <figure class="mockup" style="margin:0">
+        <div class="chrome"><span class="dots"><i></i><i></i><i></i></span> QEMU · SeaBIOS → Limine → basalt.elf</div>
+        <img src="{{ 'assets/m0-screendump.png' | relative_url }}" alt="M0 实拍：QEMU framebuffer 输出 hello world">
+      </figure>
+      <div class="code-window">
+        <div class="chrome"><span class="dots"><i></i><i></i><i></i></span> headless 冒烟 · COM1 串口日志</div>
+        <div class="body"><span class="c-dim">$ make check</span>
+<span class="c-dim">…timeout 15 qemu-system-x86_64 …</span>
+<span class="c-ok">CHECK PASSED: hello world on COM1</span>
 
-Basalt 是一个从裸机开始构建的自研 x86-64 内核（教学/研究项目）。C++17 子集 + C + 汇编三语言分层，Limine 引导程序负责固件初始化，内核自身代码从 64 位长模式入口开始。
+<span class="c-dim"># 串口日志原始字节</span>
+<span class="c-hello">12K</span>hello world
 
-<span class="badge ok">M0 已达成 ✅</span>
-<span class="badge">Limine v12.10.0</span>
-<span class="badge">x86-64</span>
-<span class="badge">C++17 / C11 / GNU as</span>
-<span class="badge">WSL2 + QEMU</span>
+<span class="c-dim"># 1 = 进入 64 位入口桩
+# 2 = 自建栈切换完成
+# K = kmain（C++）已接管</span></div>
+      </div>
+    </div>
+    <p class="caption" style="margin:14px 0 0; color:var(--on-dark-soft)">左：1024×768 framebuffer 主显示（Terminus 8×16 字形）。右：CI 可断言的串口通道（ADR-003 双 sink 设计）。</p>
+  </div>
+</section>
 
-## M0 实拍
+<!-- ============ cream band：特性三卡 ============ -->
+<section class="band">
+  <div class="wrap">
+    <h2 class="display-lg">为什么值得读、值得写</h2>
+    <p class="lead">M0 严格限定"能启动 + hello world"，但工程方法与扩展接口按真实内核的标准预留。</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <span class="num">01</span>
+        <h3>三语言严格分层</h3>
+        <p>汇编只做入口桩，C 守住硬件边界，C++ 只出现在子系统层。跨语言一律 extern "C"，
+        单向依赖，层间边界即 ABI 边界——每一层都能单独讲清楚。</p>
+      </div>
+      <div class="feature-card">
+        <span class="num">02</span>
+        <h3>headless 可验证</h3>
+        <p>make check 十五秒冒烟断言串口输出；QEMU 监视器 screendump / 寄存器 / 异常日志
+        三板斧定位引导故障——全程无需人工盯屏。M0 的三个引导协议坑就是这么抓出来的。</p>
+      </div>
+      <div class="feature-card">
+        <span class="num">03</span>
+        <h3>决策全部留痕</h3>
+        <p>引导协议为何从 Multiboot2 改为 Limine、字模为何选 Terminus、arm64 为何只占位——
+        六条 ADR 逐条记录背景、备选与后果，文档即站点的治理方式。</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-以下是当前里程碑的真实 QEMU 运行截图：Limine 设置 1024×768 图形模式后，内核通过 framebuffer 绘制 Terminus 8×16 字形，输出 `hello world`（同时 COM1 串口输出 `12Khello world` 供自动化验证）。
+<!-- ============ soft band：引导链路 ============ -->
+<section class="band band-soft">
+  <div class="wrap">
+    <h2 class="display-md">一次加电，四步到 hello world</h2>
+    <p class="lead">整条链路在模拟器中运行，不写任何真实磁盘或引导区。</p>
+    <div class="chain">
+      <div class="step"><span class="no">STEP 1</span><h3>固件与引导程序</h3><p>SeaBIOS/UEFI 交给 Limine：装载 ELF、建页表、切长模式、设置 1024×768 图形模式。</p></div>
+      <div class="step"><span class="no">STEP 2</span><h3>64 位入口桩</h3><p>entry64.S：串口探针 '1'，切到自建的 16 KiB 内核栈，探针 '2'。</p></div>
+      <div class="step"><span class="no">STEP 3</span><h3>C++ 内核入口</h3><p>kmain 校验 Limine 响应，取出 framebuffer 信息，探针 'K'。</p></div>
+      <div class="step"><span class="no">STEP 4</span><h3>点亮屏幕</h3><p>console 双 sink：framebuffer 逐位绘制字形 + COM1 输出同一行字，随后 cli;hlt 静默停机。</p></div>
+    </div>
+  </div>
+</section>
 
-![M0 实拍：QEMU framebuffer 输出 hello world](assets/m0-screendump.png)
+<!-- ============ cream band：文档瓷砖 ============ -->
+<section class="band" style="padding-top:0">
+  <div class="wrap">
+    <h2 class="display-md">从这里开始读</h2>
+    <p class="lead">四份入口文档，覆盖"是什么 / 怎么跑 / 为什么 / 下一步"。</p>
+    <div class="doc-grid">
+      <a class="doc-tile" href="{{ '/readme/' | relative_url }}">
+        <span class="kind">README</span>
+        <h3>README</h3>
+        <p>仓库门面：三秒上手、构建与验证命令、目录速览。</p>
+        <span class="go">阅读 →</span>
+      </a>
+      <a class="doc-tile" href="{{ '/PROJECT-GUIDE/' | relative_url }}">
+        <span class="kind">GUIDE</span>
+        <h3>项目详细指南</h3>
+        <p>每一个文件的用途与用法、构建系统逐项解释、排障三板斧、扩展怎么做。</p>
+        <span class="go">阅读 →</span>
+      </a>
+      <a class="doc-tile" href="https://github.com/BS-O/Basalt/blob/main/docs/ARCHITECTURE.md">
+        <span class="kind">ARCHITECTURE</span>
+        <h3>架构设计</h3>
+        <p>分层模型、引导链路、M0 实测踩坑记录（Limine 协议三关）。</p>
+        <span class="go">GitHub 阅读 →</span>
+      </a>
+      <a class="doc-tile" href="https://github.com/BS-O/Basalt/tree/main/docs/adr">
+        <span class="kind">DECISIONS</span>
+        <h3>决策记录 ADR</h3>
+        <p>六个已拍板决策：协议选型、输出通道、字模来源、工具链、arm64 占位、legacy 归档。</p>
+        <span class="go">GitHub 阅读 →</span>
+      </a>
+    </div>
+  </div>
+</section>
 
-<p class="caption">QEMU -M pc · framebuffer 主显示 · 左上角黑底白字，随后内核 cli;hlt 静默停机（预期行为）</p>
-
-## 引导链路
-
-```
-BIOS/UEFI → Limine 引导程序（固件初始化、16位→32位→64位长模式、页表、ELF 装载）
-                │  跳入内核 ELF 入口（已是 64 位长模式）
-                ▼
-        boot/x86/entry64.S   串口探针 '1' → 切自建栈 → 探针 '2'
-                │  rdi = framebuffer 请求指针
-                ▼
-        kernel/kmain.cpp     探针 'K' → console 初始化 → "hello world" → cli;hlt
-```
-
-## 三秒上手
-
-```bash
-cd /mnt/d/Basalt     # WSL2 Debian
-make && make iso     # 字模生成 → 内核 ELF → ISO + BIOS 引导记录
-make run             # QEMU 窗口目视 hello world
-make check           # headless 冒烟：断言 COM1 → CHECK PASSED
-```
-
-## 工程亮点
-
-<div class="card">
-<strong>输出抽象层</strong> —— 架构无关的 console 多 sink 设计：framebuffer 主显示 + COM1 调试串口双通道，一次 <code>console::write</code> 同写两路；arm64 将来提供自己的 sink。
-</div>
-
-<div class="card">
-<strong>自动化验证</strong> —— <code>make check</code> headless 冒烟 + QEMU 监视器 screendump/寄存器/异常日志三板斧，全程无需人工盯屏幕即可定位引导故障。
-</div>
-
-<div class="card">
-<strong>决策记录</strong> —— 从引导协议选型到 arm64 占位，六个关键决策全部落档 ADR-001~006，含 Multiboot2 → Limine 的任务书修订对照。
-</div>
-
-<div class="card">
-<strong>配额治理</strong> —— 开源组件登记制：Limine 头文件（BSD-2）+ Terminus 字模（OFL 1.1），合计 &lt;2%，上限 25%；vendored 原始包带 SHA256 校验记录。
-</div>
-
-## 文档导航
-
-| 文档 | 内容 | 入口 |
-|---|---|---|
-| **项目详细指南** | 每一个文件的用途、使用方法、构建系统、排障经验 | [在线阅读](PROJECT-GUIDE/) |
-| 架构设计 | 分层、目录、引导链路、M0 踩坑记录 | [GitHub 上查看](https://github.com/BS-O/Basalt/blob/main/docs/ARCHITECTURE.md) |
-| 任务书 v2 | 引导协议修订对照（Multiboot2 → Limine） | [GitHub 上查看](https://github.com/BS-O/Basalt/blob/main/docs/TASK-SPEC.md) |
-| 决策记录 | ADR-001 ~ ADR-006 | [GitHub 上查看](https://github.com/BS-O/Basalt/tree/main/docs/adr) |
-| 源码仓库 | 全部代码与构建脚本 | [github.com/BS-O/Basalt](https://github.com/BS-O/Basalt) |
-
-> 范围纪律：M0 = 能启动 + 输出 hello world。进程、文件系统、网络、驱动等完整内核功能一律不在当前里程碑，arm64 仅做占位预留。
+<!-- ============ coral CTA band ============ -->
+<section class="wrap" style="padding-bottom:0">
+  <div class="cta-coral">
+    <h2>把这块石头搬回你的机器上。</h2>
+    <p>三条命令：构建 → 跑起来 → 自动验证。一切发生在模拟器里，不动宿主机一根毫毛。</p>
+    <div class="hero-cta">
+      <a class="btn btn-cream" href="https://github.com/BS-O/Basalt">克隆仓库</a>
+      <a class="btn btn-cream" href="{{ '/PROJECT-GUIDE/' | relative_url }}">先读指南</a>
+    </div>
+  </div>
+</section>
