@@ -207,6 +207,18 @@ Basalt/
 | `PROJECT-GUIDE.md` | **本文件** |
 | `index.html`、`_layouts/`、`_config.yml` | GitHub Pages 站点（见 §7.3） |
 
+### 4.12 独立站点仓库（极狐 GitLab Pages 镜像）
+
+`D:\Basalt-site`（对应 jihulab 项目 `BS-O/basalt`）是本站的 GitLab Pages 适配版，与 GitHub `docs/` 同源。差异点：
+
+- `_config.yml` 的 `baseurl`：GitHub 用仓库路径（自动），GitLab 侧为空串（唯一域名根路径服务）；
+- `.gitlab-ci.yml`：ruby:3.2 镜像内 `gem install "jekyll:3.9.5" kramdown-parser-gfm`（GFM 输入必须显式装此 gem）→ `jekyll build -d public` → `public/` 声明为 artifacts；
+- 链接改写：PROJECT-GUIDE 内相对链接已改为 GitHub 绝对链接（独立仓库里没有目标文件）。
+
+**极狐 SaaS 实测限制（2026-11-19）**：Pages 站点访问级别实例级禁开 public（API 报"公开访问被禁用时，Pages 访问级别不能为公开"）；自定义域名管理 API 与 UI 均已下线（404）。站点因此登录可见，公开宣传以 GitHub Pages 为准；将来极狐放开后激活路径：`pages_access_level=public` + 界面加域名。
+
+**GitLab CI 踩坑记录**：① script 行未加引号串内含 `: ` 会被 YAML 当映射，流水线 0 作业即 failed；② `kramdown: input: GFM` 在裸 ruby 镜像缺 `kramdown-parser-gfm`；③ `gem install` 多 gem 带版本必须用 `name:ver` 需求语法，不能 `-v`。
+
 ### 4.10 legacy/ —— 上一代存档
 
 早期 Multiboot2/GRUB 路线的完整旧骨架（含构建产物）。**不参与构建、不入 git、不计任何配额**。仅在考古/对比时查看（ADR-001）。
