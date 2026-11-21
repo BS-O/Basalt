@@ -1,6 +1,9 @@
 ---
 layout: page
 title: Basalt 项目详细指南
+doc_theme: true
+page_lang: zh
+pair_en: /PROJECT-GUIDE/en/
 ---
 
 # Basalt 项目详细指南
@@ -11,7 +14,7 @@ title: Basalt 项目详细指南
 | | |
 |---|---|
 | 文档版本 | v1.0（随 M0 提交） |
-| 上游文档 | [ARCHITECTURE.md](ARCHITECTURE.md)（设计） · [TASK-SPEC.md](TASK-SPEC.md)（任务书 v2） · [adr/](adr/)（决策记录） |
+| 上游文档 | [ARCHITECTURE.md](https://github.com/BS-O/Basalt/blob/main/docs/ARCHITECTURE.md)（设计） · [TASK-SPEC.md](https://github.com/BS-O/Basalt/blob/main/docs/TASK-SPEC.md)（任务书 v2） · [adr/](https://github.com/BS-O/Basalt/tree/main/docs/adr)（决策记录） |
 | 快速链接 | GitHub：<https://github.com/BS-O/Basalt> · 本页线上版见仓库 Pages |
 
 ---

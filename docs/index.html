@@ -71,11 +71,11 @@ $ make check<span class="dim">             # </span><span class="ok">CHECK PASSE
 <section class="section-tight">
   <h2 class="heading-md" data-zh="[#] 从这里开始读" data-en="[#] start reading here">[#] 从这里开始读</h2>
   <div class="doc-links" style="margin-top:16px">
-    <a href="{{ '/PROJECT-GUIDE/' | relative_url }}"><span class="marker">→</span><span data-zh="项目详细指南" data-en="project guide">项目详细指南</span></a>
-    <a href="{{ '/readme/' | relative_url }}"><span class="marker">→</span>readme</a>
+    <a href="{{ '/PROJECT-GUIDE/' | relative_url }}" data-href-zh="{{ '/PROJECT-GUIDE/' | relative_url }}" data-href-en="{{ '/PROJECT-GUIDE/en/' | relative_url }}"><span class="marker">→</span><span data-zh="项目详细指南" data-en="project guide">项目详细指南</span></a>
+    <a href="{{ '/readme/' | relative_url }}" data-href-zh="{{ '/readme/' | relative_url }}" data-href-en="{{ '/readme/en/' | relative_url }}"><span class="marker">→</span>readme</a>
     <a href="https://github.com/BS-O/Basalt/blob/main/docs/ARCHITECTURE.md"><span class="marker">→</span><span data-zh="架构设计（GitHub）" data-en="architecture (github)">架构设计（GitHub）</span></a>
     <a href="https://github.com/BS-O/Basalt/tree/main/docs/adr"><span class="marker">→</span><span data-zh="决策记录 ADR-001~006" data-en="decision records ADR-001~006">决策记录 ADR-001~006</span></a>
     <a href="https://github.com/BS-O/Basalt"><span class="marker">→</span><span data-zh="GitHub 仓库" data-en="github repository">GitHub 仓库</span></a>
   </div>
-  <p class="fine" data-zh="范围纪律：M0 = 能启动 + 输出 hello world。进程、文件系统、网络、驱动等完整内核功能一律不在当前里程碑，arm64 仅做占位预留。" data-en="scope discipline: M0 = boots + prints hello world. processes, filesystems, networking, drivers are all out; arm64 stays a placeholder.">范围纪律：M0 = 能启动 + 输出 hello world。进程、文件系统、网络、驱动等完整内核功能一律不在当前里程碑，arm64 仅做占位预留。</p>
+  <p class="fine" data-zh="范围纪律：M1 = 启动日志 + PMM + bsh shell + 插件机制。进程调度、文件系统、网络等完整内核功能尚未开始，arm64 仅做占位预留。" data-en="scope discipline: M1 = boot log + PMM + bsh shell + plugin mechanism. scheduling, filesystems and networking have not started; arm64 stays a placeholder.">范围纪律：M1 = 启动日志 + PMM + bsh shell + 插件机制。进程调度、文件系统、网络等完整内核功能尚未开始，arm64 仅做占位预留。</p>
 </section>

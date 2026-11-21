@@ -9,9 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  /* ==== Basalt web · OpenCode mono chrome on a premium deep-blue gradient ====
-     gradient-dominant theme: navy -> blue -> emerald fills the viewport,
-     content floats on a frosted dark panel, text flips to light. */
+  /* ==== Basalt web · gradient-dominant home + black reading theme for docs ==== */
   :root {
     --ink: #eef1f6;
     --ink-deep: #ffffff;
@@ -52,24 +50,43 @@
     background-attachment: fixed;
     min-height: 100vh;
   }
-  /* frosted dark content column floating over the gradient */
+  /* wide frosted column on home; docs override to flat black below */
   .paper {
     background: rgba(6, 10, 24, 0.52);
     backdrop-filter: blur(26px) saturate(150%);
     -webkit-backdrop-filter: blur(26px) saturate(150%);
-    max-width: 1024px;
+    max-width: 1440px;
     margin: 0 auto;
     min-height: 100vh;
     border-left: 1px solid rgba(255, 255, 255, 0.10);
     border-right: 1px solid rgba(255, 255, 255, 0.10);
     box-shadow: 0 0 80px rgba(0, 0, 0, 0.35);
   }
+  /* ==== docs reading theme: pure black, white text, wide column ==== */
+  .paper.doc {
+    --ink: #e9e9ec;
+    --ink-deep: #ffffff;
+    --body: #c9c9cf;
+    --mute: #9096a0;
+    --stone: #7d838d;
+    --ash: #9aa0aa;
+    --accent: #6cb6ff;
+    --hairline: rgba(255, 255, 255, 0.13);
+    --hairline-strong: rgba(255, 255, 255, 0.30);
+    --surface-soft: #131316;
+    --surface-card: #1a1a1f;
+    --surface-dark: #000000;
+    background: #0a0a0d;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .paper.doc .pnav { background: rgba(10, 10, 13, 0.86); }
   a { color: var(--accent); text-decoration: underline; }
   a:hover { color: #a5d8ff; }
-  .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+  .wrap { max-width: 1360px; margin: 0 auto; padding: 0 32px; }
   .rule { border: none; border-top: 1px solid var(--hairline); margin: 0; }
 
-  /* ==== primary-nav: frosted strip, hairline bottom ==== */
+  /* ==== primary-nav ==== */
   .pnav {
     position: sticky; top: 0; z-index: 50;
     background: rgba(6, 10, 24, 0.72);
@@ -77,7 +94,7 @@
     -webkit-backdrop-filter: blur(18px) saturate(160%);
     border-bottom: 1px solid var(--hairline);
     height: 56px; display: flex; align-items: center;
-    padding: 0 max(24px, calc((100% - 1024px) / 2));
+    padding: 0 max(32px, calc((100% - 1440px) / 2));
   }
   .pnav .wordmark { font-weight: 700; font-size: 16px; text-decoration: none; letter-spacing: 0; color: var(--ink-deep); }
   .pnav .links { display: flex; gap: 24px; margin-left: auto; align-items: center; }
@@ -102,10 +119,10 @@
   .lang-switch button.on { background: var(--ink-deep); color: #06122b; }
 
   /* ==== sections ==== */
-  .section { padding: 96px max(24px, calc((100% - 1024px) / 2)); }
-  .section-tight { padding: 48px max(24px, calc((100% - 1024px) / 2)); }
+  .section { padding: 96px max(32px, calc((100% - 1440px) / 2)); }
+  .section-tight { padding: 48px max(32px, calc((100% - 1440px) / 2)); }
   .display-xl {
-    font-size: clamp(28px, 4.4vw, 40px); font-weight: 700; line-height: 1.3; margin: 0 0 24px;
+    font-size: clamp(30px, 4.6vw, 44px); font-weight: 700; line-height: 1.3; margin: 0 0 24px;
     background: linear-gradient(180deg, #ffffff 20%, #a5c8ff 90%);
     -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent; color: transparent;
@@ -116,10 +133,10 @@
     border: 1px solid var(--hairline);
     font: 400 14px/2 var(--mono); padding: 2px 8px; border-radius: 4px; margin-bottom: 16px;
   }
-  p.lead { color: var(--body); font-size: 16px; line-height: 1.5; margin: 0 0 32px; max-width: 720px; }
+  p.lead { color: var(--body); font-size: 16px; line-height: 1.5; margin: 0 0 32px; max-width: 900px; }
   p.fine { color: var(--mute); font-size: 14px; line-height: 2; margin: 8px 0 0; }
 
-  /* ==== hero TUI mockup: deeper inset panel ==== */
+  /* ==== hero TUI mockup ==== */
   .tui {
     background: rgba(2, 4, 12, 0.55);
     border-top: 1px solid var(--hairline);
@@ -132,7 +149,6 @@
   .tui .dim { color: var(--on-dark-mute); }
   .tui .ok { color: var(--success); }
   .tui .mark { color: var(--warning); }
-  .tui .caret { background: var(--ink-deep); color: transparent; }
 
   /* ==== list rows ==== */
   .list-row { display: block; padding: 8px 0; color: var(--body); font-size: 16px; line-height: 1.5; }
@@ -156,27 +172,28 @@
   .snippet .mark { color: var(--warning); }
   .snippet .dim { color: var(--mute); }
 
-  /* ==== markdown pages (guide / readme) ==== */
-  .md-page { max-width: 860px; margin: 0 auto; padding: 64px 24px 96px; }
-  .md-page h1 { font-size: 32px; font-weight: 700; line-height: 1.5; margin: 8px 0 24px; padding-bottom: 16px; border-bottom: 1px solid var(--hairline); color: var(--ink-deep); }
-  .md-page h2 { font-size: 20px; font-weight: 700; margin: 48px 0 16px; color: var(--ink); }
-  .md-page h3 { font-size: 16px; font-weight: 700; margin: 32px 0 12px; color: var(--ink); }
-  .md-page p, .md-page li { color: var(--body); line-height: 1.5; font-size: 16px; }
+  /* ==== markdown docs: wide, black-on-white-text reading ==== */
+  .md-page { max-width: 1200px; margin: 0 auto; padding: 64px 32px 96px; }
+  .md-page h1 { font-size: 34px; font-weight: 700; line-height: 1.4; margin: 8px 0 24px; padding-bottom: 16px; border-bottom: 1px solid var(--hairline); color: var(--ink-deep); }
+  .md-page h2 { font-size: 22px; font-weight: 700; margin: 48px 0 16px; color: var(--ink); }
+  .md-page h3 { font-size: 17px; font-weight: 700; margin: 32px 0 12px; color: var(--ink); }
+  .md-page p, .md-page li { color: var(--body); line-height: 1.6; font-size: 16px; }
   .md-page a { color: var(--accent); }
   .md-page table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 14px; }
-  .md-page th, .md-page td { border: 1px solid var(--hairline); padding: 8px 12px; text-align: left; vertical-align: top; }
+  .md-page th, .md-page td { border: 1px solid var(--hairline); padding: 9px 14px; text-align: left; vertical-align: top; }
   .md-page th { background: var(--surface-card); color: var(--ink); font-weight: 700; }
   .md-page td { color: var(--body); }
   .md-page code { background: var(--surface-card); border: 1px solid var(--hairline); color: var(--ink); border-radius: 4px; padding: 1px 5px; font-size: 14px; }
-  .md-page pre { background: rgba(2, 4, 12, 0.55); border: 1px solid var(--hairline); border-radius: 4px; padding: 16px 20px; overflow-x: auto; margin: 16px 0; }
-  .md-page pre code { background: none; border: none; padding: 0; color: var(--on-dark); font-size: 14px; line-height: 1.6; }
-  .md-page blockquote { margin: 16px 0; padding: 4px 16px; color: var(--ash); border-left: 3px solid var(--accent); background: var(--surface-soft); }
+  .md-page pre { background: #000000; border: 1px solid var(--hairline); border-radius: 4px; padding: 16px 20px; overflow-x: auto; margin: 16px 0; }
+  .md-page pre code { background: none; border: none; padding: 0; color: #e8e8ea; font-size: 14px; line-height: 1.6; }
+  .md-page blockquote { margin: 16px 0; padding: 6px 18px; color: var(--ash); border-left: 3px solid var(--accent); background: var(--surface-soft); }
   .md-page img { max-width: 100%; border-radius: 4px; border: 1px solid var(--hairline); }
   .md-page hr { border: none; border-top: 1px solid var(--hairline); margin: 40px 0; }
-  .src-note { font: 400 14px/2 var(--mono); color: var(--mute); max-width: 860px; margin: -64px auto 80px; padding: 0 24px; }
+  .src-note { font: 400 14px/2 var(--mono); color: var(--mute); max-width: 1200px; margin: -64px auto 80px; padding: 0 32px; }
 
   /* ==== footer ==== */
-  footer.site { background: rgba(2, 4, 12, 0.45); color: var(--body); border-top: 1px solid var(--hairline); padding: 32px max(24px, calc((100% - 1024px) / 2)); }
+  footer.site { background: rgba(2, 4, 12, 0.45); color: var(--body); border-top: 1px solid var(--hairline); padding: 32px max(32px, calc((100% - 1440px) / 2)); }
+  .paper.doc footer.site { background: #08080a; }
   footer.site .cols { display: flex; flex-wrap: wrap; gap: 16px 48px; justify-content: space-between; }
   footer.site .col h4 { font: 700 14px/2 var(--mono); color: var(--ink); margin: 0 0 4px; }
   footer.site .col a { display: block; font: 400 14px/2 var(--mono); color: var(--mute); text-decoration: none; }
@@ -194,13 +211,16 @@
 </style>
 </head>
 <body>
-<div class="paper">
+<div class="paper{% if page.doc_theme %} doc{% endif %}"
+     data-lang="{{ page.page_lang | default: 'auto' }}"
+     data-pair-en="{% if page.pair_en %}{{ page.pair_en | relative_url }}{% endif %}"
+     data-pair-zh="{% if page.pair_zh %}{{ page.pair_zh | relative_url }}{% endif %}">
 <nav class="pnav">
   <a class="wordmark" href="{{ '/' | relative_url }}">basalt_</a>
   <div class="links">
     <a class="nl" href="{{ '/' | relative_url }}" data-zh="首页" data-en="home">首页</a>
-    <a class="nl" href="{{ '/PROJECT-GUIDE/' | relative_url }}" data-zh="指南" data-en="guide">指南</a>
-    <a class="nl" href="{{ '/readme/' | relative_url }}">readme</a>
+    <a class="nl" href="{{ '/PROJECT-GUIDE/' | relative_url }}" data-href-zh="{{ '/PROJECT-GUIDE/' | relative_url }}" data-href-en="{{ '/PROJECT-GUIDE/en/' | relative_url }}" data-zh="指南" data-en="guide">指南</a>
+    <a class="nl" href="{{ '/readme/' | relative_url }}" data-href-zh="{{ '/readme/' | relative_url }}" data-href-en="{{ '/readme/en/' | relative_url }}">readme</a>
     <a class="gh keep" href="https://github.com/BS-O/Basalt">github</a>
     <div class="lang-switch" role="group" aria-label="language">
       <button type="button" id="lang-zh" class="on">中</button>
@@ -215,8 +235,8 @@
   <div class="cols">
     <div class="col">
       <h4 data-zh="文档" data-en="docs">文档</h4>
-      <a href="{{ '/PROJECT-GUIDE/' | relative_url }}" data-zh="项目详细指南" data-en="project guide">项目详细指南</a>
-      <a href="{{ '/readme/' | relative_url }}">readme</a>
+      <a href="{{ '/PROJECT-GUIDE/' | relative_url }}" data-href-zh="{{ '/PROJECT-GUIDE/' | relative_url }}" data-href-en="{{ '/PROJECT-GUIDE/en/' | relative_url }}" data-zh="项目详细指南" data-en="project guide">项目详细指南</a>
+      <a href="{{ '/readme/' | relative_url }}" data-href-zh="{{ '/readme/' | relative_url }}" data-href-en="{{ '/readme/en/' | relative_url }}">readme</a>
       <a href="https://github.com/BS-O/Basalt/blob/main/docs/ARCHITECTURE.md" data-zh="架构设计" data-en="architecture">架构设计</a>
       <a href="https://github.com/BS-O/Basalt/tree/main/docs/adr" data-zh="决策记录 ADR" data-en="decision records">决策记录 ADR</a>
     </div>
@@ -240,22 +260,52 @@
 
 <script>
 (function () {
+  var paper = document.querySelector('.paper');
   var ZH = 'zh', EN = 'en';
+  var pairEn = paper.getAttribute('data-pair-en') || '';
+  var pairZh = paper.getAttribute('data-pair-zh') || '';
+  var pageLang = paper.getAttribute('data-lang') || 'auto';
+
   function apply(lang) {
     document.querySelectorAll('[data-zh]').forEach(function (el) {
       var v = el.getAttribute('data-' + lang);
       if (v !== null) el.textContent = v;
+    });
+    document.querySelectorAll('[data-href-zh]').forEach(function (el) {
+      var v = el.getAttribute('data-href-' + lang);
+      if (v !== null) el.setAttribute('href', v);
     });
     document.documentElement.lang = (lang === ZH) ? 'zh-CN' : 'en';
     document.getElementById('lang-zh').classList.toggle('on', lang === ZH);
     document.getElementById('lang-en').classList.toggle('on', lang === EN);
     try { localStorage.setItem('basalt-lang', lang); } catch (e) {}
   }
-  document.getElementById('lang-zh').addEventListener('click', function () { apply(ZH); });
-  document.getElementById('lang-en').addEventListener('click', function () { apply(EN); });
+
   var saved = null;
   try { saved = localStorage.getItem('basalt-lang'); } catch (e) {}
-  if (saved === EN) apply(EN);
+
+  /* doc pages are single-language: honor the saved preference by jumping to the paired page */
+  if (pageLang === EN) {
+    apply(EN);
+    if (saved === ZH && pairZh) { location.replace(pairZh); return; }
+  } else if (pageLang === ZH) {
+    apply(ZH);
+    if (saved === EN && pairEn) { location.replace(pairEn); return; }
+  } else {
+    if (saved === EN) apply(EN);
+  }
+
+  function go(lang) {
+    var pair = (lang === EN) ? pairEn : pairZh;
+    if (pair) {
+      try { localStorage.setItem('basalt-lang', lang); } catch (e) {}
+      location.href = pair;
+      return;
+    }
+    apply(lang);
+  }
+  document.getElementById('lang-zh').addEventListener('click', function () { go(ZH); });
+  document.getElementById('lang-en').addEventListener('click', function () { go(EN); });
 })();
 </script>
 </body>
