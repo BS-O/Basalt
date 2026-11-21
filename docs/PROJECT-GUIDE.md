@@ -373,3 +373,19 @@ L0 boot/（asm+C）   只准 include limine.h
 | 任务书的条款与修订对照 | docs/TASK-SPEC.md |
 | 某个决策为什么这么定 | docs/adr/ADR-001..006 |
 | 开源配额与组件登记 | third_party/README.md |
+
+### 4.13 M1 新增文件（2026-11-21，BasaltCore 叙事）
+
+| 文件 | 用途 |
+|---|---|
+| `kernel/mm/pmm.c` | 位图 PMM：Limine memmap → 1bit/4KiB 帧，first-fit 分配，HHDM 偏移 |
+| `kernel/lib/kprintf.cpp/.h` | 启动日志格式化（%s %c %d %u %x + kvprintf va_list 桥） |
+| `arch/x86/io/kbd.c/.h` | PS/2 键盘轮询驱动（scancode set-1 → ASCII，Shift/CapsLock） |
+| `kernel/shell/shell.c` | bsh shell（纯 C）：help/ver/clear/echo/meminfo/plugins/halt |
+| `kernel/shell/shell_cxx.cpp` | C-ABI 桥：sh_* 符号把 C++ 子系统暴露给纯 C 的 shell |
+| `kernel/plugins/plugins.c/.h` | BSPL 插件注册表：Limine module → 探测/登记/init 调用 |
+| `tools/bplugin.py` | 生成示例 BSPL 插件（hello 0.1.0），ISO 携带演示 |
+| `tools/m1-screendump.sh` | M1 framebuffer 截图诊断脚本 |
+| `limine.conf` | 新增 `module_path` 挂载插件 |
+
+**品牌叙事**：仓库即 **BasaltCore**（Basalt 系统的核心内核）。README 与架构文档已写入"未来上线 Basalt 插件生态（basalt plugin）"路线；启动日志与 shell 横幅在 0 插件时提示 *"search 'basalt plugin' on GitHub"*。
