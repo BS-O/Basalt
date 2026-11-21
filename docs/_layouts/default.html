@@ -5,278 +5,218 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
 <meta name="description" content="{{ site.description }}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* ==== Basalt web · tokens from DESIGN.md (Claude warm-editorial system) ==== */
+  /* ==== Basalt web · Apple design tokens (DESIGN.md apple) ==== */
   :root {
-    --primary: #cc785c;         /* coral */
-    --primary-active: #a9583e;
-    --ink: #141413;
-    --body: #3d3d3a;
-    --body-strong: #252523;
-    --muted: #6c6a64;
-    --muted-soft: #8e8b82;
-    --hairline: #e6dfd8;
-    --hairline-soft: #ebe6df;
-    --canvas: #faf9f5;
-    --surface-soft: #f5f0e8;
-    --surface-card: #efe9de;
-    --surface-dark: #181715;
-    --surface-dark-elevated: #252320;
-    --surface-dark-soft: #1f1e1b;
+    --primary: #0066cc;         /* Action Blue - the single accent */
+    --primary-focus: #0071e3;
+    --primary-on-dark: #2997ff; /* Sky Link Blue, dark surfaces only */
+    --ink: #1d1d1f;
+    --body-on-dark: #ffffff;
+    --body-muted: #cccccc;
+    --ink-muted-80: #333333;
+    --ink-muted-48: #7a7a7a;
+    --divider-soft: #f0f0f0;
+    --hairline: #e0e0e0;
+    --canvas: #ffffff;
+    --parchment: #f5f5f7;
+    --pearl: #fafafc;
+    --tile-1: #272729;
+    --tile-2: #2a2a2c;
+    --tile-3: #252527;
+    --black: #000000;
+    --chip: rgba(210, 210, 215, 0.64);
     --on-primary: #ffffff;
-    --on-dark: #faf9f5;
-    --on-dark-soft: #a09d96;
-    --accent-teal: #5db8a6;
-    --accent-amber: #e8a55a;
-    --success: #5db872;
-    --serif: "Cormorant Garamond", Tiempos Headline, Garamond, "Times New Roman", serif;
-    --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-    --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+    --product-shadow: 0 5px 30px rgba(0, 0, 0, 0.22);
+    --sf: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    --mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
-    margin: 0; background: var(--canvas); color: var(--body);
-    font: 16px/1.55 var(--sans);
+    margin: 0; background: var(--canvas); color: var(--ink);
+    font: 400 17px/1.47 var(--sf); letter-spacing: -0.374px;
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  a { color: var(--primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
 
-  /* ==== top-nav: cream, 64px ==== */
-  header.site {
-    position: sticky; top: 0; z-index: 20;
-    background: var(--canvas); border-bottom: 1px solid var(--hairline);
+  /* ==== global-nav: true black, 44px ==== */
+  .gnav {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--black); color: var(--body-on-dark);
+    height: 44px; display: flex; align-items: center;
+    padding: 0 max(24px, calc((100% - 1024px) / 2));
+    font-size: 12px; letter-spacing: -0.12px;
   }
-  header.site .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-  .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-weight: 500; font-size: 17px; letter-spacing: 1px; }
-  .brand .mark { width: 18px; height: 18px; color: var(--ink); }
-  nav.main { display: flex; align-items: center; gap: 26px; }
-  nav.main a.link { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; }
-  nav.main a.link:hover { color: var(--ink); }
-  nav.main a.link.active { color: var(--ink); }
+  .gnav .links { display: flex; gap: 28px; align-items: center; flex: 1; }
+  .gnav a { color: rgba(255,255,255,0.85); font-size: 12px; }
+  .gnav a:hover { color: #fff; text-decoration: none; }
+  .gnav .logo { font-weight: 600; color: #fff; letter-spacing: 0.5px; }
+  .lang-switch {
+    display: flex; align-items: center; gap: 0;
+    border: 1px solid rgba(255,255,255,0.35); border-radius: 9999px;
+    overflow: hidden; margin-left: 16px;
+  }
+  .lang-switch button {
+    appearance: none; border: none; cursor: pointer;
+    background: transparent; color: rgba(255,255,255,0.7);
+    font: 400 12px/1 var(--sf); letter-spacing: 0;
+    padding: 5px 12px; transition: background 0.15s, color 0.15s;
+  }
+  .lang-switch button.on { background: #fff; color: var(--ink); }
 
-  /* ==== buttons ==== */
+  /* ==== tiles: full-bleed, 80px padding, color change is the divider ==== */
+  .tile { padding: 80px max(24px, calc((100% - 1024px) / 2)); text-align: center; }
+  .tile-white { background: var(--canvas); }
+  .tile-parchment { background: var(--parchment); }
+  .tile-dark { background: var(--tile-1); color: var(--body-on-dark); }
+  .tile-dark-2 { background: var(--tile-2); color: var(--body-on-dark); }
+  .tile-dark-3 { background: var(--tile-3); color: var(--body-on-dark); }
+  .tile h1, .tile h2 { font-weight: 600; margin: 0 0 8px; }
+  .hero-display { font-size: clamp(34px, 6vw, 56px); line-height: 1.07; letter-spacing: -0.28px; }
+  .display-lg { font-size: clamp(28px, 4vw, 40px); line-height: 1.1; }
+  .lead { font-size: clamp(19px, 2.4vw, 28px); line-height: 1.14; letter-spacing: 0.196px; font-weight: 400; margin: 0 auto 18px; max-width: 720px; }
+  .tile-dark .lead, .tile-dark-2 .lead, .tile-dark-3 .lead { color: var(--body-muted); }
+  .tagline { font-size: 21px; font-weight: 600; line-height: 1.19; letter-spacing: 0.231px; margin: 0 0 10px; }
+  .fine { font-size: 12px; color: var(--ink-muted-48); letter-spacing: -0.12px; line-height: 1.5; }
+  .tile-dark .fine, .tile-dark-2 .fine, .tile-dark-3 .fine { color: var(--body-muted); }
+
+  /* ==== buttons: pill grammar, single blue ==== */
+  .cta-row { display: flex; gap: 16px; justify-content: center; margin: 22px 0 8px; flex-wrap: wrap; }
   .btn {
     display: inline-flex; align-items: center; justify-content: center;
-    height: 40px; padding: 12px 20px; border-radius: 8px;
-    font: 500 14px/1 var(--sans); text-decoration: none; cursor: pointer;
+    border-radius: 9999px; padding: 11px 22px; cursor: pointer;
+    font: 400 17px/1 var(--sf); letter-spacing: -0.374px;
+    transition: transform 0.12s;
   }
-  .btn-primary { background: var(--primary); color: var(--on-primary); }
-  .btn-primary:hover { background: var(--primary-active); }
-  .btn-secondary { background: var(--canvas); color: var(--ink); border: 1px solid var(--hairline); }
-  .btn-secondary:hover { border-color: var(--muted-soft); }
-  .btn-cream { background: var(--canvas); color: var(--ink); }
-  .btn-sm { height: 34px; padding: 10px 16px; }
+  .btn:active { transform: scale(0.95); }
+  .btn:focus-visible { outline: 2px solid var(--primary-focus); outline-offset: 2px; }
+  .btn-primary { background: var(--primary); color: var(--on-primary); border: none; }
+  .btn-ghost { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
+  .btn-dark-util { background: var(--ink); color: #fff; border: none; border-radius: 8px; padding: 8px 15px; font-size: 14px; }
+  .tile-dark a, .tile-dark-2 a, .tile-dark-3 a { color: var(--primary-on-dark); }
 
-  /* ==== hero band: cream, 96px rhythm ==== */
-  .hero { padding: 96px 0 72px; }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--primary); color: var(--on-primary);
-    font: 500 12px/1.4 var(--sans); letter-spacing: 1.5px; text-transform: uppercase;
-    border-radius: 9999px; padding: 4px 12px;
-  }
-  .hero-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--on-primary); }
-  h1.display-xl {
-    font: 400 clamp(40px, 6vw, 64px)/1.05 var(--serif);
-    letter-spacing: -1.5px; color: var(--ink);
-    margin: 20px 0 18px;
-  }
-  h1.display-xl em { font-style: normal; color: var(--primary); }
-  .hero-sub { max-width: 640px; font-size: 17px; line-height: 1.6; color: var(--body); margin: 0 0 28px; }
-  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-  .hero-meta { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; }
-  .badge-pill {
-    background: var(--surface-card); color: var(--ink);
-    font: 500 13px/1.4 var(--sans);
-    border-radius: 9999px; padding: 4px 12px;
-  }
-  .badge-teal { background: transparent; border: 1px solid var(--hairline); color: var(--muted); }
-  .badge-teal b { color: var(--accent-teal); font-weight: 500; }
+  /* product render: the only shadow in the system */
+  .render { display: block; margin: 48px auto 0; max-width: 720px; width: 100%; filter: drop-shadow(3px 5px 30px rgba(0,0,0,0.22)); border-radius: 8px; }
 
-  /* ==== dark product band (alternating surface) ==== */
-  .band-dark { background: var(--surface-dark); padding: 72px 0; }
-  .band-dark h2.display-lg, .band-dark h2.display-md { color: var(--on-dark); }
-  .band-dark .lead { color: var(--on-dark-soft); max-width: 640px; margin: 10px 0 36px; font-size: 16px; }
-  .dark-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 24px; align-items: start; }
-  .mockup {
-    background: var(--surface-dark); border: 1px solid var(--surface-dark-elevated);
-    border-radius: 12px; overflow: hidden;
-  }
-  .mockup .chrome {
-    display: flex; align-items: center; gap: 8px;
-    background: var(--surface-dark-elevated); padding: 10px 14px;
-    font: 500 12.5px/1 var(--mono); color: var(--on-dark-soft);
-  }
-  .mockup .chrome .dots { display: inline-flex; gap: 6px; }
-  .mockup .chrome .dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--surface-dark); }
-  .mockup .chrome .dots i:nth-child(1) { background: #c64545; }
-  .mockup .chrome .dots i:nth-child(2) { background: var(--accent-amber); }
-  .mockup .chrome .dots i:nth-child(3) { background: var(--accent-teal); }
-  .mockup img { display: block; width: 100%; height: auto; }
-  .code-window { background: var(--surface-dark); border-radius: 12px; overflow: hidden; border: 1px solid var(--surface-dark-elevated); }
-  .code-window .body {
-    background: var(--surface-dark-soft); padding: 20px 22px;
-    font: 400 13.5px/1.75 var(--mono); color: var(--on-dark);
-    overflow-x: auto; white-space: pre;
-  }
-  .code-window .c-cmd { color: var(--accent-teal); }
-  .code-window .c-ok { color: var(--success); }
-  .code-window .c-hello { color: var(--accent-amber); }
-  .code-window .c-dim { color: var(--on-dark-soft); }
+  /* ==== two-up tile grid (homepage alternate) ==== */
+  .tile-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; }
+  .feature { padding: 24px; }
+  .feature h3 { font-size: 21px; font-weight: 600; margin: 0 0 8px; }
+  .feature p { font-size: 17px; line-height: 1.47; margin: 0; }
+  .feature .fine { margin-top: 10px; }
+  .tile-dark .feature h3, .tile-dark-2 .feature h3 { color: #fff; }
+  .tile-dark .feature p, .tile-dark-2 .feature p { color: var(--body-muted); }
 
-  /* ==== cream bands ==== */
-  .band { padding: 96px 0; }
-  .band-soft { background: var(--surface-soft); }
-  h2.display-lg { font: 400 clamp(30px, 4vw, 48px)/1.1 var(--serif); letter-spacing: -1px; color: var(--ink); margin: 0 0 14px; }
-  h2.display-md { font: 400 clamp(26px, 3vw, 36px)/1.15 var(--serif); letter-spacing: -0.5px; color: var(--ink); margin: 0 0 12px; }
-  .lead { color: var(--body); max-width: 680px; margin: 0 0 40px; font-size: 16px; }
+  /* doc link stack (dense-link grammar) */
+  .doc-links { display: flex; flex-direction: column; gap: 0; max-width: 480px; margin: 18px auto 0; text-align: left; }
+  .doc-links a { font-size: 17px; line-height: 2.41; color: var(--primary); }
 
-  /* feature cards: surface-card, 12px radius, 32px padding */
-  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .feature-card {
-    background: var(--surface-card); border-radius: 12px; padding: 32px;
+  /* terminal window (product surface on dark tile) */
+  .term {
+    background: var(--black); border-radius: 8px; overflow: hidden;
+    max-width: 640px; margin: 32px auto 0; text-align: left;
   }
-  .feature-card .num { font: 400 15px/1 var(--serif); color: var(--primary); letter-spacing: 0; margin-bottom: 14px; display: block; }
-  .feature-card h3 { font: 500 18px/1.4 var(--sans); color: var(--ink); margin: 0 0 10px; }
-  .feature-card p { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--body); }
+  .term .bar { display: flex; gap: 6px; padding: 10px 12px; background: var(--tile-3); }
+  .term .bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--chip); display: inline-block; }
+  .term .bar i:nth-child(1) { background: #ff5f57; } .term .bar i:nth-child(2) { background: #febc2e; } .term .bar i:nth-child(3) { background: #28c840; }
+  .term pre { margin: 0; padding: 18px 20px; font: 400 13.5px/1.75 var(--mono); color: var(--body-on-dark); overflow-x: auto; letter-spacing: 0; }
+  .term .ok { color: #28c840; } .term .mark { color: #febc2e; } .term .dim { color: var(--body-muted); }
 
-  /* doc tiles: canvas + hairline */
-  .doc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .doc-tile {
-    background: var(--canvas); border: 1px solid var(--hairline);
-    border-radius: 12px; padding: 32px; display: flex; flex-direction: column; gap: 8px;
-    text-decoration: none;
-  }
-  .doc-tile:hover { border-color: var(--muted-soft); }
-  .doc-tile .kind { font: 500 12px/1.4 var(--sans); letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted-soft); }
-  .doc-tile h3 { font: 500 22px/1.3 var(--sans); color: var(--ink); margin: 2px 0; }
-  .doc-tile p { margin: 0; font-size: 14.5px; color: var(--body); line-height: 1.6; }
-  .doc-tile .go { color: var(--primary); font: 500 14px/1 var(--sans); margin-top: auto; padding-top: 14px; }
-
-  /* boot chain steps */
-  .chain { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; counter-reset: step; }
-  .step { background: var(--canvas); border: 1px solid var(--hairline); border-radius: 12px; padding: 20px; position: relative; }
-  .step .no {
-    font: 500 13px/1 var(--mono); color: var(--primary);
-    display: inline-block; border: 1px solid var(--hairline); border-radius: 9999px; padding: 5px 12px; margin-bottom: 12px;
-  }
-  .step h3 { font: 500 16px/1.4 var(--sans); color: var(--ink); margin: 0 0 6px; }
-  .step p { margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.55; }
-
-  /* ==== coral CTA band ==== */
-  .cta-coral {
-    background: var(--primary); border-radius: 12px; color: var(--on-primary);
-    padding: 64px; margin: 0 0 96px;
-  }
-  .cta-coral h2 { font: 400 clamp(26px, 3.4vw, 40px)/1.15 var(--serif); letter-spacing: -0.5px; margin: 0 0 12px; }
-  .cta-coral p { margin: 0 0 28px; font-size: 16px; opacity: 0.94; }
-
-  /* ==== footer: dark ==== */
-  footer.site { background: var(--surface-dark); color: var(--on-dark-soft); padding: 48px 0 40px; }
-  footer.site .brand { color: var(--on-dark); }
-  footer.site .brand .mark { color: var(--on-dark); }
-  footer.site .cols { display: flex; flex-wrap: wrap; gap: 48px; justify-content: space-between; margin-top: 20px; }
-  footer.site a { color: var(--on-dark-soft); text-decoration: none; font-size: 14px; display: block; padding: 4px 0; }
-  footer.site a:hover { color: var(--on-dark); }
-  footer.site .fine { margin-top: 28px; font-size: 13px; color: var(--on-dark-soft); opacity: 0.8; }
-
-  /* ==== markdown-rendered pages (guide, readme) ==== */
-  .md-page { max-width: 860px; margin: 0 auto; padding: 56px 24px 96px; }
-  .md-page h1 { font: 400 44px/1.1 var(--serif); letter-spacing: -1px; color: var(--ink); margin: 8px 0 20px; padding-bottom: 12px; border-bottom: 1px solid var(--hairline); }
-  .md-page h2 { font: 400 30px/1.15 var(--serif); letter-spacing: -0.5px; color: var(--ink); margin: 44px 0 14px; }
-  .md-page h3 { font: 500 18px/1.4 var(--sans); color: var(--ink); margin: 30px 0 10px; }
-  .md-page p, .md-page li { color: var(--body); line-height: 1.7; }
-  .md-page a { color: var(--primary); }
+  /* ==== markdown pages (guide / readme) ==== */
+  .md-page { max-width: 860px; margin: 0 auto; padding: 64px 24px 96px; text-align: left; }
+  .md-page h1 { font-size: clamp(30px, 4vw, 44px); font-weight: 600; letter-spacing: -0.28px; margin: 8px 0 20px; padding-bottom: 12px; border-bottom: 1px solid var(--hairline); }
+  .md-page h2 { font-size: 30px; font-weight: 600; letter-spacing: -0.28px; margin: 44px 0 14px; }
+  .md-page h3 { font-size: 21px; font-weight: 600; margin: 30px 0 10px; }
+  .md-page p, .md-page li { line-height: 1.47; }
   .md-page table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
   .md-page th, .md-page td { border: 1px solid var(--hairline); padding: 9px 13px; text-align: left; vertical-align: top; }
-  .md-page th { background: var(--surface-card); color: var(--ink); font-weight: 500; }
-  .md-page code {
-    font: 400 13.5px/1.6 var(--mono);
-    background: var(--surface-soft); border: 1px solid var(--hairline);
-    border-radius: 6px; padding: 1px 6px; color: var(--body-strong);
-  }
-  .md-page pre {
-    background: var(--surface-dark); border-radius: 12px; padding: 20px 22px;
-    overflow-x: auto; margin: 18px 0;
-  }
-  .md-page pre code { background: none; border: none; padding: 0; color: var(--on-dark); font: 400 13.5px/1.7 var(--mono); }
-  .md-page blockquote {
-    margin: 18px 0; padding: 6px 20px; color: var(--muted);
-    border-left: 3px solid var(--primary); background: var(--surface-soft);
-  }
-  .md-page img { max-width: 100%; border: 1px solid var(--hairline); border-radius: 16px; }
+  .md-page th { background: var(--parchment); font-weight: 600; }
+  .md-page code { font: 400 13.5px/1.6 var(--mono); background: var(--parchment); border-radius: 5px; padding: 1px 6px; letter-spacing: 0; }
+  .md-page pre { background: var(--tile-1); border-radius: 11px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; }
+  .md-page pre code { background: none; padding: 0; color: #fff; font-size: 13.5px; line-height: 1.7; }
+  .md-page blockquote { margin: 18px 0; padding: 4px 20px; color: var(--ink-muted-80); border-left: 3px solid var(--primary); background: var(--parchment); }
+  .md-page img { max-width: 100%; border-radius: 11px; }
   .md-page hr { border: none; border-top: 1px solid var(--hairline); margin: 40px 0; }
+  .src-note { font-size: 12px; color: var(--ink-muted-48); max-width: 860px; margin: -60px auto 80px; padding: 0 24px; }
+  .src-note a { font-size: 12px; }
 
-  .caption { color: var(--muted-soft); font-size: 13.5px; margin-top: -28px; margin-bottom: 40px; }
+  /* ==== footer: parchment, dense-link columns ==== */
+  footer.site { background: var(--parchment); color: var(--ink-muted-80); padding: 64px max(24px, calc((100% - 1024px) / 2)) 40px; }
+  footer.site .cols { display: flex; flex-wrap: wrap; gap: 48px; justify-content: space-between; }
+  footer.site .col h4 { font-size: 14px; font-weight: 600; letter-spacing: -0.224px; margin: 0 0 6px; color: var(--ink); }
+  footer.site .col a { display: block; font-size: 12px; line-height: 2; color: var(--ink-muted-80); letter-spacing: -0.12px; }
+  footer.site .col a:hover { color: var(--ink); text-decoration: none; }
+  footer.site .legal { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--hairline); font-size: 12px; color: var(--ink-muted-48); }
 
   /* ==== responsive ==== */
-  @media (max-width: 1024px) {
-    .dark-grid { grid-template-columns: 1fr; }
-    .feature-grid, .doc-grid { grid-template-columns: repeat(2, 1fr); }
-    .chain { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 640px) {
-    .hero { padding: 64px 0 48px; }
-    .band { padding: 64px 0; }
-    .feature-grid, .doc-grid, .chain { grid-template-columns: 1fr; }
-    .cta-coral { padding: 40px 28px; margin-bottom: 64px; }
-    nav.main a.link { display: none; }
-    nav.main a.link.keep { display: inline; }
+  @media (max-width: 833px) {
+    .gnav .links a:not(.keep) { display: none; }
+    .tile { padding: 48px 24px; }
+    .tile-2col { grid-template-columns: 1fr; }
+    .md-page { padding: 40px 20px 72px; }
   }
 </style>
 </head>
 <body>
-<header class="site">
-  <div class="wrap">
-    <a class="brand" href="{{ '/' | relative_url }}">
-      <svg class="mark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M12 1v22M3.5 6.5l17 11M20.5 6.5l-17 11" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
-      </svg>
-      Basalt
-    </a>
-    <nav class="main">
-      <a class="link" href="{{ '/' | relative_url }}">首页</a>
-      <a class="link" href="{{ '/PROJECT-GUIDE/' | relative_url }}">详细指南</a>
-      <a class="link" href="{{ '/readme/' | relative_url }}">README</a>
-      <a class="btn btn-primary btn-sm keep" href="https://github.com/BS-O/Basalt" style="color:#fff">GitHub 源码</a>
-    </nav>
+<nav class="gnav">
+  <div class="links">
+    <a class="logo keep" href="{{ '/' | relative_url }}">Basalt</a>
+    <a href="{{ '/' | relative_url }}" data-zh="首页" data-en="Home">首页</a>
+    <a href="{{ '/PROJECT-GUIDE/' | relative_url }}" data-zh="项目指南" data-en="Guide">项目指南</a>
+    <a href="{{ '/readme/' | relative_url }}" data-zh="README" data-en="README">README</a>
+    <a href="https://github.com/BS-O/Basalt" class="keep">GitHub</a>
   </div>
-</header>
+  <div class="lang-switch" role="group" aria-label="Language">
+    <button type="button" id="lang-zh" class="on">中</button>
+    <button type="button" id="lang-en">EN</button>
+  </div>
+</nav>
 
 {{ content }}
 
 <footer class="site">
-  <div class="wrap">
-    <a class="brand" href="{{ '/' | relative_url }}">
-      <svg class="mark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M12 1v22M3.5 6.5l17 11M20.5 6.5l-17 11" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
-      </svg>
-      Basalt
-    </a>
-    <div class="cols">
-      <div>
-        <div style="font-size:13px; letter-spacing:1.5px; text-transform:uppercase; color:var(--on-dark); margin-bottom:10px;">文档</div>
-        <a href="{{ '/PROJECT-GUIDE/' | relative_url }}">项目详细指南</a>
-        <a href="{{ '/readme/' | relative_url }}">README</a>
-        <a href="{{ 'PROJECT-GUIDE' | relative_url }}#10-文档地图查什么去哪份">文档地图</a>
-      </div>
-      <div>
-        <div style="font-size:13px; letter-spacing:1.5px; text-transform:uppercase; color:var(--on-dark); margin-bottom:10px;">仓库</div>
-        <a href="https://github.com/BS-O/Basalt">GitHub · BS-O/Basalt</a>
-        <a href="https://github.com/BS-O/Basalt/tree/main/docs/adr">决策记录 ADR-001~006</a>
-        <a href="https://github.com/BS-O/Basalt/blob/main/docs/ARCHITECTURE.md">架构设计</a>
-      </div>
-      <div>
-        <div style="font-size:13px; letter-spacing:1.5px; text-transform:uppercase; color:var(--on-dark); margin-bottom:10px;">里程碑</div>
-        <a href="{{ '/' | relative_url }}">M0 · hello world ✅</a>
-        <a href="{{ '/PROJECT-GUIDE/' | relative_url }}#72-常见扩展怎么做">路线图</a>
-      </div>
+  <div class="cols">
+    <div class="col">
+      <h4 data-zh="文档" data-en="Docs">文档</h4>
+      <a href="{{ '/PROJECT-GUIDE/' | relative_url }}" data-zh="项目详细指南" data-en="Project Guide">项目详细指南</a>
+      <a href="{{ '/readme/' | relative_url }}" data-zh="README" data-en="README">README</a>
+      <a href="https://github.com/BS-O/Basalt/blob/main/docs/ARCHITECTURE.md" data-zh="架构设计" data-en="Architecture">架构设计</a>
+      <a href="https://github.com/BS-O/Basalt/tree/main/docs/adr" data-zh="决策记录 ADR" data-en="Decision Records">决策记录 ADR</a>
     </div>
-    <div class="fine">Basalt（玄武岩）· 自研 x86-64 内核 · Limine Boot Protocol · C++17 / C / GNU as</div>
+    <div class="col">
+      <h4 data-zh="仓库" data-en="Repository">仓库</h4>
+      <a href="https://github.com/BS-O/Basalt">GitHub · BS-O/Basalt</a>
+      <a href="https://jihulab.com/BS-O/basalt">极狐 GitLab · BS-O/basalt</a>
+    </div>
+    <div class="col">
+      <h4 data-zh="里程碑" data-en="Milestones">里程碑</h4>
+      <a href="{{ '/' | relative_url }}">M0 · hello world ✅</a>
+    </div>
   </div>
+  <div class="legal">Basalt（玄武岩）· 自研 x86-64 内核 · Limine Boot Protocol · C++17 / C / GNU as · <span data-zh="© 2026 Basalt 项目" data-en="© 2026 The Basalt Project">© 2026 Basalt 项目</span></div>
 </footer>
+
+<script>
+(function () {
+  var ZH = 'zh', EN = 'en';
+  function apply(lang) {
+    document.querySelectorAll('[data-zh]').forEach(function (el) {
+      var v = el.getAttribute('data-' + lang);
+      if (v !== null) el.textContent = v;
+    });
+    document.documentElement.lang = (lang === ZH) ? 'zh-CN' : 'en';
+    document.getElementById('lang-zh').classList.toggle('on', lang === ZH);
+    document.getElementById('lang-en').classList.toggle('on', lang === EN);
+    try { localStorage.setItem('basalt-lang', lang); } catch (e) {}
+  }
+  document.getElementById('lang-zh').addEventListener('click', function () { apply(ZH); });
+  document.getElementById('lang-en').addEventListener('click', function () { apply(EN); });
+  var saved = null;
+  try { saved = localStorage.getItem('basalt-lang'); } catch (e) {}
+  if (saved === EN) apply(EN);
+})();
+</script>
 </body>
 </html>
