@@ -24,6 +24,27 @@ volatile struct limine_framebuffer_request framebuffer_request = {
 };
 
 __attribute__((used, section(".limine_requests")))
+volatile struct limine_memmap_request memmap_request = {
+    .id = LIMINE_MEMMAP_REQUEST_ID,
+    .revision = 0,
+    .response = 0,
+};
+
+__attribute__((used, section(".limine_requests")))
+volatile struct limine_hhdm_request hhdm_request = {
+    .id = LIMINE_HHDM_REQUEST_ID,
+    .revision = 0,
+    .response = 0,
+};
+
+__attribute__((used, section(".limine_requests")))
+volatile struct limine_module_request module_request = {
+    .id = LIMINE_MODULE_REQUEST_ID,
+    .revision = 0,
+    .response = 0,
+};
+
+__attribute__((used, section(".limine_requests")))
 static volatile struct limine_entry_point_request entry_point_request = {
     .id = LIMINE_ENTRY_POINT_REQUEST_ID,
     .revision = 0,

@@ -10,10 +10,14 @@ void serial_putc(char c);
 void fb_init(void *addr, uint64_t width, uint64_t height, uint64_t pitch,
              uint16_t bpp, uint8_t memory_model);
 void fb_putc(char c);
+void fb_clear(void);
 int fb_ok(void);
 }
 
 namespace basalt::console {
+
+void fb_clear(void) { ::fb_clear(); }
+int fb_available(void) { return ::fb_ok(); }
 
 void init(const fb_info *info)
 {

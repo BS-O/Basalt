@@ -1,16 +1,15 @@
-# Basalt 操作系统架构设计
+# BasaltCore 操作系统架构设计
 
-> Basalt(玄武岩)——地壳之下最坚实的那层石头。C++/C 为主、汇编为辅，从裸机开始构建的自研 x86-64 内核。
->
-> 本文档对应**最小可启动里程碑 (M0)**：能启动 + framebuffer 输出 "hello world"。
+> Basalt(玄武岩)——地壳之下最坚实的那层石头。**BasaltCore 是 Basalt 系统的核心内核**，
+> 未来将在其上生长出 Basalt 插件生态（basalt plugin）。C++/C 为主、汇编为辅，从裸机开始构建。
 
 | | |
 |---|---|
-| 文档版本 | v1.1（Limine 方案，ADR-001~006 全部已拍板，M0 已实现并通过验证） |
+| 文档版本 | v2.0（M1：PMM/启动日志/键盘/shell/插件机制） |
 | 目标架构 | x86-64 主体；arm64 仅占位（ADR-006） |
 | 引导 | Limine Boot Protocol（ADR-002，任务书已修订，见 docs/TASK-SPEC.md） |
 | 语言策略 | C++17 子集（子系统层） + C（硬件层） + 汇编（仅 64 位入口桩） |
-| 状态 | ✅ M0 已达成：Limine 引导 → framebuffer+串口输出 "hello world"（构建/冒烟全绿） |
+| 状态 | ✅ M1：PMM 位图分配器 + 初代 Linux 风启动日志 + bsh shell + 插件机制（冒烟全绿） |
 
 ---
 
@@ -130,3 +129,18 @@ namespace basalt::console {
 ## 7. 决策记录
 
 所有已拍板决策见 `docs/adr/`（ADR-001 ~ ADR-006）；任务书修订全文见 `docs/TASK-SPEC.md`。
+
+## 8. M1 新增子系统（2026-11-21）
+
+| 子系统 | 位置 | 说明 |
+|---|---|---|
+| PMM 物理内存管理 | `kernel/mm/pmm.c` | Limine memmap 位图分配器（1 bit/4KiB 帧，first-fit 扫描），HHDM 偏移来自 Limine |
+| 启动日志 | `kernel/kmain.cpp` | 初代 Linux 风逐行日志（无时间戳）：fb0/ttyS0/mem/i8042/plugins |
+| kprintf | `kernel/lib/kprintf.cpp` | %s %c %d %u %x 子集 + kvprintf(va_list) C-ABI 桥 |
+| PS/2 键盘 | `arch/x86/io/kbd.c` | 轮询式 scancode set-1 → ASCII（含 Shift/CapsLock） |
+| bsh shell | `kernel/shell/` | framebuffer 交互 shell：help/ver/clear/echo/meminfo/plugins/halt；C-ABI 桥（shell_cxx.cpp）连接 C++ 子系统 |
+| 插件机制 | `kernel/plugins/` | Limine module 装载的 BSPL 格式插件；启动与 shell 横幅均报告插件数，0 个时提示去 GitHub 搜 'basalt plugin' |
+
+**插件格式（BSPL v1）**：`magic 'BSPL' + api(1) + init 指针 + name/version 偏移`；`tools/bplugin.py` 生成示例插件，`limine.conf` 的 `module_path` 挂载。
+
+**未来**（Basalt 插件生态）：插件仓库索引、`basalt plugin install`、插件间调用 ABI —— 见 README「插件体系」。

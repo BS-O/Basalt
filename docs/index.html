@@ -4,16 +4,16 @@ title: Basalt · 自研 x86-64 内核
 permalink: /
 ---
 
-<!-- ============ hero section (cream) ============ -->
+<!-- ============ hero section (cream paper over gradient) ============ -->
 <section class="section">
-  <span class="badge-news" data-zh="M0 已达成" data-en="M0 shipped">M0 已达成</span>
-  <h1 class="display-xl" data-zh="玄武岩。地壳之下，最坚实的一层。" data-en="basalt. the strongest layer beneath the crust.">玄武岩。地壳之下，最坚实的一层。</h1>
-  <p class="lead" data-zh="从裸机开始构建的自研 x86-64 内核。Limine 负责固件初始化，内核自身代码从 64 位长模式入口开始，直至在屏幕上画出第一个字符。" data-en="a self-built x86-64 kernel starting from bare metal. limine handles firmware bring-up; the kernel itself begins at the 64-bit long-mode entry, all the way to the first character on screen.">从裸机开始构建的自研 x86-64 内核。Limine 负责固件初始化，内核自身代码从 64 位长模式入口开始，直至在屏幕上画出第一个字符。</p>
+  <span class="badge-news" data-zh="M1 已达成" data-en="M1 shipped">M1 已达成</span>
+  <h1 class="display-xl" data-zh="BasaltCore。内核，以及未来的插件生态。" data-en="basaltcore. the kernel, and the plugin ecosystem to come.">BasaltCore。内核，以及未来的插件生态。</h1>
+  <p class="lead" data-zh="从裸机开始构建的自研 x86-64 内核核心。Limine 负责固件初始化；M1 带来位图内存管理、初代 Unix 风启动日志、framebuffer shell 与插件机制——Basalt 插件生态将生长于此。" data-en="a self-built x86-64 kernel core starting from bare metal. limine handles firmware bring-up; M1 ships bitmap memory management, an early-unix boot log, a framebuffer shell, and the plugin mechanism - the basalt plugin ecosystem will grow here.">从裸机开始构建的自研 x86-64 内核核心。Limine 负责固件初始化；M1 带来位图内存管理、初代 Unix 风启动日志、framebuffer shell 与插件机制——Basalt 插件生态将生长于此。</p>
   <p class="fine" data-zh="C++17 / C11 / GNU as · Limine v12.10.0 · WSL2 + QEMU · make check 全绿" data-en="C++17 / C11 / GNU as · Limine v12.10.0 · WSL2 + QEMU · make check green">C++17 / C11 / GNU as · Limine v12.10.0 · WSL2 + QEMU · make check 全绿</p>
 </section>
 <hr class="rule">
 
-<!-- ============ hero TUI mockup (the single dark surface) ============ -->
+<!-- ============ hero TUI mockup (M1 boot log) ============ -->
 <section class="tui">
   <pre class="ascii-wm">
 █████   ████  █████   ████  █      ██████
@@ -21,13 +21,24 @@ permalink: /
 █████  ██████ █████   ██████ █        ██
 █    █ █    █     █   █    █ █        ██
 █████  █    █ █████   █    █ ██████   ██</pre>
-  <div style="color: var(--on-dark-mute); font-size: 14px; line-height: 2; text-align: center; margin: 8px 0 40px">b a s a l t · k e r n e l · m 0</div>
-  <div class="prompt-row"><span class="pipe">|</span> boot <span class="model">[Limine v12.10.0]</span> <span class="dim">SeaBIOS → long mode → kmain</span></div>
-  <div class="hints">
-    <span class="ok">CHECK PASSED: hello world on COM1</span><br>
-    <span class="mark">12K</span>hello world<br>
-    <span class="dim"># 1 = entry stub · 2 = stack switch · K = kmain (C++) took over</span>
-  </div>
+  <div style="color: var(--on-dark-mute); font-size: 14px; line-height: 2; text-align: center; margin: 8px 0 40px">b a s a l t c o r e · m 1</div>
+  <pre style="font: 400 14px/1.7 var(--mono); color: var(--on-dark); text-align: left; max-width: 760px; margin: 0 auto; overflow-x: auto;"><span class="dim">BasaltCore 0.1.0 (x86-64) - Limine Boot Protocol, base revision 3</span>
+<span class="dim">Copyright (c) 2026 Basalt Project. booting...</span>
+
+fb0      : 1024x768 x 32 bpp, pitch 4096 - framebuffer console up
+ttyS0    : COM1 16550, 115200 8N1 - debug/CI console
+mem     : usable 260492 KiB, 65377 frames managed by bitmap PMM
+i8042    : PS/2 keyboard ok (polled)
+<span class="mark">plugins  : 1 plugin(s) detected: hello</span>
+plugins  : 1/1 initialized ok
+
+<span class="ok">BasaltCore is ready. starting shell...</span>
+
+<span class="dim">BasaltCore shell (bsh) v0.1.0</span>
+1 plugin(s) installed: hello
+Type 'help' for commands.
+
+<span class="dim">basalt#</span> <span style="background: var(--on-dark); color: var(--surface-dark)">&nbsp;</span></pre>
 </section>
 
 <!-- ============ features (list rows, ASCII markers) ============ -->
@@ -36,11 +47,11 @@ permalink: /
   <div class="grid-2" style="margin-top:16px">
     <div>
       <span class="list-row"><span class="marker">[+]</span><b data-zh="三语言严格分层" data-en="three languages, strictly layered">三语言严格分层</b><br><span data-zh="汇编只做入口桩，C 守硬件边界，C++ 只出现在子系统层；跨语言一律 extern &quot;C&quot;。" data-en="asm at the entry stub only, C guards hardware, C++ in subsystems; extern &quot;C&quot; at every boundary.">汇编只做入口桩，C 守硬件边界，C++ 只出现在子系统层；跨语言一律 extern "C"。</span></span>
-      <span class="list-row"><span class="marker">[+]</span><b data-zh="headless 可验证" data-en="verifiable, headless">headless 可验证</b><br><span data-zh="make check 十五秒冒烟断言串口输出，全程无需人工盯屏。" data-en="make check asserts serial output in a 15s smoke run; no human staring required.">make check 十五秒冒烟断言串口输出，全程无需人工盯屏。</span></span>
+      <span class="list-row"><span class="marker">[+]</span><b data-zh="位图内存管理" data-en="bitmap PMM">位图内存管理</b><br><span data-zh="Limine memmap 驱动的 4KiB 帧位图分配器，meminfo 命令实时可查。" data-en="a 4KiB-frame bitmap allocator over the limine memmap; live stats via 'meminfo'.">Limine memmap 驱动的 4KiB 帧位图分配器，meminfo 命令实时可查。</span></span>
     </div>
     <div>
-      <span class="list-row"><span class="marker">[+]</span><b data-zh="决策全部留痕" data-en="every decision on record">决策全部留痕</b><br><span data-zh="六条 ADR 记录引导协议、字模、工具链等决策的背景、备选与后果。" data-en="six ADRs record context, options, and consequences for every decision.">六条 ADR 记录引导协议、字模、工具链等决策的背景、备选与后果。</span></span>
-      <span class="list-row"><span class="marker">[+]</span><b data-zh="配额治理" data-en="quota governance">配额治理</b><br><span data-zh="开源组件登记制：Limine 头文件（BSD-2）+ Terminus 字模（OFL 1.1），合计 &lt;2%，上限 25%。" data-en="registered components: Limine headers (BSD-2) + Terminus glyphs (OFL 1.1), &lt;2% combined under a 25% cap.">开源组件登记制：Limine 头文件（BSD-2）+ Terminus 字模（OFL 1.1），合计 <2%，上限 25%。</span></span>
+      <span class="list-row"><span class="marker">[+]</span><b data-zh="bsh 交互 shell" data-en="bsh interactive shell">bsh 交互 shell</b><br><span data-zh="PS/2 键盘 + framebuffer 回显，help/ver/echo/meminfo/plugins/halt 命令。" data-en="ps/2 keyboard + framebuffer echo; commands help/ver/echo/meminfo/plugins/halt.">PS/2 键盘 + framebuffer 回显，help/ver/echo/meminfo/plugins/halt 命令。</span></span>
+      <span class="list-row"><span class="marker">[+]</span><b data-zh="插件机制" data-en="plugin mechanism">插件机制</b><br><span data-zh="启动与 shell 横幅均报告插件数；0 个插件时提示去 GitHub 搜 'basalt plugin'——生态由此起步。" data-en="boot and shell banners report installed plugins; with none installed you're pointed to search 'basalt plugin' on github - the ecosystem starts here.">启动与 shell 横幅均报告插件数；0 个插件时提示去 GitHub 搜 'basalt plugin'——生态由此起步。</span></span>
     </div>
   </div>
 </section>
@@ -49,9 +60,9 @@ permalink: /
 <!-- ============ install/snippet grammar: build & run ============ -->
 <section class="section-tight">
   <h2 class="heading-md" data-zh="[$] 三秒上手" data-en="[$] up in three commands">[$] 三秒上手</h2>
-  <div class="snippet">$ cd /mnt/d/Basalt<span class="dim">        # WSL2 Debian</span>
-$ make && make iso<span class="dim">      # kernel ELF → bootable ISO</span>
-$ make check<span class="dim">             # </span><span class="ok">CHECK PASSED: hello world on COM1</span></div>
+  <div class="snippet">$ make && make iso<span class="dim">      # kernel ELF + hello plugin → bootable ISO</span>
+$ make run<span class="dim">             # boot log → bsh shell (ps/2 keyboard)</span>
+$ make check<span class="dim">             # </span><span class="ok">CHECK PASSED: M1 boot log on COM1</span></div>
   <p class="fine" data-zh="一切构建与运行均在模拟器/隔离环境中，不写真实磁盘引导区。" data-en="everything builds and runs inside an emulator/sandbox; no real disk or boot sector is ever touched.">一切构建与运行均在模拟器/隔离环境中，不写真实磁盘引导区。</p>
 </section>
 <hr class="rule">

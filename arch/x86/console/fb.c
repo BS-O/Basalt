@@ -46,6 +46,19 @@ int fb_ok(void)
     return fb_active;
 }
 
+void fb_clear(void)
+{
+    if (!fb_active) return;
+    for (uint64_t row = 0; row < fb_height; row++) {
+        volatile uint32_t *line =
+            (volatile uint32_t *)((volatile uint8_t *)fb_base + row * fb_pitch);
+        for (uint64_t col = 0; col < fb_width; col++)
+            line[col] = 0;
+    }
+    cur_x = 0;
+    cur_y = 0;
+}
+
 static void fb_newline(void)
 {
     cur_x = 0;

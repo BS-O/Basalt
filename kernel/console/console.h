@@ -24,4 +24,10 @@ void init(const fb_info *info);
 void putc(char c);
 void write(const char *s);
 
+/* Clear the framebuffer (scrolls away); safe when fb is not available. */
+void fb_clear(void);
+
+/* Nonzero if a usable 32bpp RGB framebuffer is active. */
+int fb_available(void);
+
 } // namespace basalt::console

@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  /* ==== Basalt web · OpenCode terminal-native tokens (DESIGN.md opencode.ai) ==== */
+  /* ==== Basalt web · OpenCode terminal tokens on a premium deep-blue gradient ==== */
   :root {
     --ink: #201d1d;
     --ink-deep: #0f0000;
@@ -31,15 +31,29 @@
     --warning: #ff9f0a;
     --danger: #ff3b30;
     --success: #30d158;
-    /* Berkeley Mono substitute stack per DESIGN.md note */
     --mono: "Berkeley Mono", "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    /* premium gradient stops: deep blue -> blue -> green */
+    --grad-deep: #0a1633;
+    --grad-blue: #1d4ed8;
+    --grad-green: #059669;
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
-    margin: 0; background: var(--canvas); color: var(--ink);
+    margin: 0; color: var(--ink);
     font: 400 16px/1.5 var(--mono);
     -webkit-font-smoothing: antialiased;
+    /* the signature: deep-blue -> blue -> green, fixed to viewport for a calm aurora */
+    background: linear-gradient(135deg, var(--grad-deep) 0%, #123a8a 32%, var(--grad-blue) 58%, #0d7a9e 76%, var(--grad-green) 100%);
+    background-attachment: fixed;
+  }
+  /* cream content column floats over the gradient */
+  .paper {
+    background: var(--canvas);
+    max-width: 1024px;
+    margin: 0 auto;
+    min-height: 100vh;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.35);
   }
   a { color: var(--ink); text-decoration: underline; }
   a:hover { color: var(--ink); }
@@ -163,6 +177,7 @@
 </style>
 </head>
 <body>
+<div class="paper">
 <nav class="pnav">
   <a class="wordmark" href="{{ '/' | relative_url }}">basalt_</a>
   <div class="links">
@@ -196,13 +211,15 @@
     <div class="col">
       <h4 data-zh="里程碑" data-en="milestone">里程碑</h4>
       <a href="{{ '/' | relative_url }}">M0 · hello world [x]</a>
+      <a href="{{ '/' | relative_url }}">M1 · pmm + shell + plugins [x]</a>
     </div>
   </div>
   <div class="legal">
-    <span>©2026 Basalt · x86-64 kernel · Limine Boot Protocol</span>
+    <span>©2026 BasaltCore · x86-64 kernel · Limine Boot Protocol</span>
     <span data-zh="玄武岩——地壳之下最坚实的那层石头" data-en="basalt — the strongest layer beneath the crust">玄武岩——地壳之下最坚实的那层石头</span>
   </div>
 </footer>
+</div>
 
 <script>
 (function () {
