@@ -5,172 +5,175 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
 <meta name="description" content="{{ site.description }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  /* ==== Basalt web · Apple design tokens (DESIGN.md apple) ==== */
+  /* ==== Basalt web · OpenCode terminal-native tokens (DESIGN.md opencode.ai) ==== */
   :root {
-    --primary: #0066cc;         /* Action Blue - the single accent */
-    --primary-focus: #0071e3;
-    --primary-on-dark: #2997ff; /* Sky Link Blue, dark surfaces only */
-    --ink: #1d1d1f;
-    --body-on-dark: #ffffff;
-    --body-muted: #cccccc;
-    --ink-muted-80: #333333;
-    --ink-muted-48: #7a7a7a;
-    --divider-soft: #f0f0f0;
-    --hairline: #e0e0e0;
-    --canvas: #ffffff;
-    --parchment: #f5f5f7;
-    --pearl: #fafafc;
-    --tile-1: #272729;
-    --tile-2: #2a2a2c;
-    --tile-3: #252527;
-    --black: #000000;
-    --chip: rgba(210, 210, 215, 0.64);
-    --on-primary: #ffffff;
-    --product-shadow: 0 5px 30px rgba(0, 0, 0, 0.22);
-    --sf: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-    --mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+    --ink: #201d1d;
+    --ink-deep: #0f0000;
+    --charcoal: #302c2c;
+    --body: #424245;
+    --mute: #646262;
+    --stone: #6e6e73;
+    --ash: #9a9898;
+    --canvas: #fdfcfc;
+    --surface-soft: #f8f7f7;
+    --surface-card: #f1eeee;
+    --surface-dark: #201d1d;
+    --surface-dark-elevated: #302c2c;
+    --hairline: rgba(15, 0, 0, 0.12);
+    --hairline-strong: #646262;
+    --on-dark: #fdfcfc;
+    --on-dark-mute: #9a9898;
+    --accent: #007aff;
+    --warning: #ff9f0a;
+    --danger: #ff3b30;
+    --success: #30d158;
+    /* Berkeley Mono substitute stack per DESIGN.md note */
+    --mono: "Berkeley Mono", "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
     margin: 0; background: var(--canvas); color: var(--ink);
-    font: 400 17px/1.47 var(--sf); letter-spacing: -0.374px;
+    font: 400 16px/1.5 var(--mono);
     -webkit-font-smoothing: antialiased;
   }
-  a { color: var(--primary); text-decoration: none; }
-  a:hover { text-decoration: underline; }
+  a { color: var(--ink); text-decoration: underline; }
+  a:hover { color: var(--ink); }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+  .rule { border: none; border-top: 1px solid var(--hairline); margin: 0; }
 
-  /* ==== global-nav: true black, 44px ==== */
-  .gnav {
+  /* ==== primary-nav: cream, 56px, hairline bottom ==== */
+  .pnav {
     position: sticky; top: 0; z-index: 50;
-    background: var(--black); color: var(--body-on-dark);
-    height: 44px; display: flex; align-items: center;
+    background: var(--canvas); border-bottom: 1px solid var(--hairline);
+    height: 56px; display: flex; align-items: center;
     padding: 0 max(24px, calc((100% - 1024px) / 2));
-    font-size: 12px; letter-spacing: -0.12px;
   }
-  .gnav .links { display: flex; gap: 28px; align-items: center; flex: 1; }
-  .gnav a { color: rgba(255,255,255,0.85); font-size: 12px; }
-  .gnav a:hover { color: #fff; text-decoration: none; }
-  .gnav .logo { font-weight: 600; color: #fff; letter-spacing: 0.5px; }
-  .lang-switch {
-    display: flex; align-items: center; gap: 0;
-    border: 1px solid rgba(255,255,255,0.35); border-radius: 9999px;
-    overflow: hidden; margin-left: 16px;
-  }
-  .lang-switch button {
-    appearance: none; border: none; cursor: pointer;
-    background: transparent; color: rgba(255,255,255,0.7);
-    font: 400 12px/1 var(--sf); letter-spacing: 0;
-    padding: 5px 12px; transition: background 0.15s, color 0.15s;
-  }
-  .lang-switch button.on { background: #fff; color: var(--ink); }
-
-  /* ==== tiles: full-bleed, 80px padding, color change is the divider ==== */
-  .tile { padding: 80px max(24px, calc((100% - 1024px) / 2)); text-align: center; }
-  .tile-white { background: var(--canvas); }
-  .tile-parchment { background: var(--parchment); }
-  .tile-dark { background: var(--tile-1); color: var(--body-on-dark); }
-  .tile-dark-2 { background: var(--tile-2); color: var(--body-on-dark); }
-  .tile-dark-3 { background: var(--tile-3); color: var(--body-on-dark); }
-  .tile h1, .tile h2 { font-weight: 600; margin: 0 0 8px; }
-  .hero-display { font-size: clamp(34px, 6vw, 56px); line-height: 1.07; letter-spacing: -0.28px; }
-  .display-lg { font-size: clamp(28px, 4vw, 40px); line-height: 1.1; }
-  .lead { font-size: clamp(19px, 2.4vw, 28px); line-height: 1.14; letter-spacing: 0.196px; font-weight: 400; margin: 0 auto 18px; max-width: 720px; }
-  .tile-dark .lead, .tile-dark-2 .lead, .tile-dark-3 .lead { color: var(--body-muted); }
-  .tagline { font-size: 21px; font-weight: 600; line-height: 1.19; letter-spacing: 0.231px; margin: 0 0 10px; }
-  .fine { font-size: 12px; color: var(--ink-muted-48); letter-spacing: -0.12px; line-height: 1.5; }
-  .tile-dark .fine, .tile-dark-2 .fine, .tile-dark-3 .fine { color: var(--body-muted); }
-
-  /* ==== buttons: pill grammar, single blue ==== */
-  .cta-row { display: flex; gap: 16px; justify-content: center; margin: 22px 0 8px; flex-wrap: wrap; }
+  .pnav .wordmark { font-weight: 700; font-size: 16px; text-decoration: none; letter-spacing: 0; }
+  .pnav .links { display: flex; gap: 24px; margin-left: auto; align-items: center; }
+  .pnav a.nl { color: var(--ink); text-decoration: none; font-weight: 500; font-size: 16px; }
+  .pnav a.nl:hover { text-decoration: underline; }
+  .pnav a.gh { color: var(--mute); text-decoration: none; font-size: 14px; }
+  .pnav a.gh:hover { color: var(--ink); }
   .btn {
     display: inline-flex; align-items: center; justify-content: center;
-    border-radius: 9999px; padding: 11px 22px; cursor: pointer;
-    font: 400 17px/1 var(--sf); letter-spacing: -0.374px;
-    transition: transform 0.12s;
+    font: 500 16px/2 var(--mono);
+    padding: 4px 20px; height: 36px; cursor: pointer;
+    border-radius: 4px; text-decoration: none;
   }
-  .btn:active { transform: scale(0.95); }
-  .btn:focus-visible { outline: 2px solid var(--primary-focus); outline-offset: 2px; }
-  .btn-primary { background: var(--primary); color: var(--on-primary); border: none; }
-  .btn-ghost { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
-  .btn-dark-util { background: var(--ink); color: #fff; border: none; border-radius: 8px; padding: 8px 15px; font-size: 14px; }
-  .tile-dark a, .tile-dark-2 a, .tile-dark-3 a { color: var(--primary-on-dark); }
-
-  /* product render: the only shadow in the system */
-  .render { display: block; margin: 48px auto 0; max-width: 720px; width: 100%; filter: drop-shadow(3px 5px 30px rgba(0,0,0,0.22)); border-radius: 8px; }
-
-  /* ==== two-up tile grid (homepage alternate) ==== */
-  .tile-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; }
-  .feature { padding: 24px; }
-  .feature h3 { font-size: 21px; font-weight: 600; margin: 0 0 8px; }
-  .feature p { font-size: 17px; line-height: 1.47; margin: 0; }
-  .feature .fine { margin-top: 10px; }
-  .tile-dark .feature h3, .tile-dark-2 .feature h3 { color: #fff; }
-  .tile-dark .feature p, .tile-dark-2 .feature p { color: var(--body-muted); }
-
-  /* doc link stack (dense-link grammar) */
-  .doc-links { display: flex; flex-direction: column; gap: 0; max-width: 480px; margin: 18px auto 0; text-align: left; }
-  .doc-links a { font-size: 17px; line-height: 2.41; color: var(--primary); }
-
-  /* terminal window (product surface on dark tile) */
-  .term {
-    background: var(--black); border-radius: 8px; overflow: hidden;
-    max-width: 640px; margin: 32px auto 0; text-align: left;
+  .btn-primary { background: var(--ink); color: var(--canvas); border: none; }
+  .btn-primary:active { background: var(--ink-deep); }
+  .btn-secondary { background: var(--canvas); color: var(--ink); border: 1px solid var(--hairline-strong); }
+  .lang-switch { display: flex; margin-left: 16px; border: 1px solid var(--hairline-strong); border-radius: 4px; overflow: hidden; }
+  .lang-switch button {
+    appearance: none; border: none; cursor: pointer; background: transparent;
+    color: var(--mute); font: 500 14px/1.6 var(--mono); padding: 4px 12px;
   }
-  .term .bar { display: flex; gap: 6px; padding: 10px 12px; background: var(--tile-3); }
-  .term .bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--chip); display: inline-block; }
-  .term .bar i:nth-child(1) { background: #ff5f57; } .term .bar i:nth-child(2) { background: #febc2e; } .term .bar i:nth-child(3) { background: #28c840; }
-  .term pre { margin: 0; padding: 18px 20px; font: 400 13.5px/1.75 var(--mono); color: var(--body-on-dark); overflow-x: auto; letter-spacing: 0; }
-  .term .ok { color: #28c840; } .term .mark { color: #febc2e; } .term .dim { color: var(--body-muted); }
+  .lang-switch button.on { background: var(--ink); color: var(--canvas); }
+
+  /* ==== sections: 96px rhythm, hairline-separated, left-flush text ==== */
+  .section { padding: 96px max(24px, calc((100% - 1024px) / 2)); }
+  .section-tight { padding: 48px max(24px, calc((100% - 1024px) / 2)); }
+  .display-xl { font-size: clamp(28px, 4.4vw, 38px); font-weight: 700; line-height: 1.5; margin: 0 0 24px; }
+  .heading-md { font-size: 16px; font-weight: 700; line-height: 1.5; margin: 0; }
+  .badge-news {
+    display: inline-block; background: var(--surface-dark); color: var(--on-dark);
+    font: 400 14px/2 var(--mono); padding: 2px 8px; border-radius: 4px; margin-bottom: 16px;
+  }
+  p.lead { color: var(--body); font-size: 16px; line-height: 1.5; margin: 0 0 32px; max-width: 720px; }
+  p.fine { color: var(--mute); font-size: 14px; line-height: 2; margin: 8px 0 0; }
+
+  /* ==== hero TUI mockup: the single dark surface ==== */
+  .tui {
+    background: var(--surface-dark); color: var(--on-dark);
+    padding: 64px 32px; margin: 0 0 8px;
+  }
+  .tui pre { font: 400 13px/1.45 var(--mono); margin: 0; text-align: center; color: var(--on-dark); overflow-x: auto; }
+  .tui .ascii-wm { margin-bottom: 40px; font-size: 13px; line-height: 1.25; }
+  .prompt-row {
+    background: var(--surface-dark-elevated); color: var(--on-dark);
+    font: 400 16px/1.5 var(--mono); padding: 8px 12px; border-radius: 4px;
+    max-width: 640px; margin: 0 auto; text-align: left;
+  }
+  .prompt-row .pipe { color: var(--accent); }
+  .prompt-row .model { color: var(--warning); }
+  .prompt-row .dim { color: var(--on-dark-mute); }
+  .tui .hints { color: var(--ash); font-size: 14px; line-height: 2; text-align: center; margin-top: 40px; }
+  .tui .ok { color: var(--success); }
+  .tui .mark { color: var(--warning); }
+
+  /* ==== list rows with ASCII bracket markers ==== */
+  .list-row { display: block; padding: 8px 0; color: var(--body); font-size: 16px; line-height: 1.5; }
+  .list-row b { color: var(--ink); font-weight: 500; }
+  .list-row .marker { color: var(--ink); font-weight: 500; margin-right: 12px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 48px; }
+
+  /* doc links block */
+  .doc-links a { display: block; padding: 8px 0; font-size: 16px; line-height: 1.5; color: var(--ink); text-decoration: none; }
+  .doc-links a:hover { text-decoration: underline; }
+  .doc-links a .marker { color: var(--mute); margin-right: 12px; }
+
+  /* terminal log preview on cream (install-snippet grammar) */
+  .snippet {
+    background: var(--surface-card); color: var(--ink);
+    font: 400 16px/1.5 var(--mono); padding: 12px 16px; border-radius: 4px;
+    margin: 16px 0 0; overflow-x: auto; white-space: pre;
+  }
+  .snippet .ok { color: var(--success); }
+  .snippet .mark { color: var(--warning); }
+  .snippet .dim { color: var(--mute); }
 
   /* ==== markdown pages (guide / readme) ==== */
-  .md-page { max-width: 860px; margin: 0 auto; padding: 64px 24px 96px; text-align: left; }
-  .md-page h1 { font-size: clamp(30px, 4vw, 44px); font-weight: 600; letter-spacing: -0.28px; margin: 8px 0 20px; padding-bottom: 12px; border-bottom: 1px solid var(--hairline); }
-  .md-page h2 { font-size: 30px; font-weight: 600; letter-spacing: -0.28px; margin: 44px 0 14px; }
-  .md-page h3 { font-size: 21px; font-weight: 600; margin: 30px 0 10px; }
-  .md-page p, .md-page li { line-height: 1.47; }
-  .md-page table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
-  .md-page th, .md-page td { border: 1px solid var(--hairline); padding: 9px 13px; text-align: left; vertical-align: top; }
-  .md-page th { background: var(--parchment); font-weight: 600; }
-  .md-page code { font: 400 13.5px/1.6 var(--mono); background: var(--parchment); border-radius: 5px; padding: 1px 6px; letter-spacing: 0; }
-  .md-page pre { background: var(--tile-1); border-radius: 11px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; }
-  .md-page pre code { background: none; padding: 0; color: #fff; font-size: 13.5px; line-height: 1.7; }
-  .md-page blockquote { margin: 18px 0; padding: 4px 20px; color: var(--ink-muted-80); border-left: 3px solid var(--primary); background: var(--parchment); }
-  .md-page img { max-width: 100%; border-radius: 11px; }
+  .md-page { max-width: 860px; margin: 0 auto; padding: 64px 24px 96px; }
+  .md-page h1 { font-size: 32px; font-weight: 700; line-height: 1.5; margin: 8px 0 24px; padding-bottom: 16px; border-bottom: 1px solid var(--hairline); }
+  .md-page h2 { font-size: 20px; font-weight: 700; margin: 48px 0 16px; }
+  .md-page h3 { font-size: 16px; font-weight: 700; margin: 32px 0 12px; }
+  .md-page p, .md-page li { color: var(--body); line-height: 1.5; font-size: 16px; }
+  .md-page table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 14px; }
+  .md-page th, .md-page td { border: 1px solid var(--hairline); padding: 8px 12px; text-align: left; vertical-align: top; }
+  .md-page th { background: var(--surface-soft); color: var(--ink); font-weight: 700; }
+  .md-page code { background: var(--surface-card); border-radius: 4px; padding: 1px 5px; font-size: 14px; }
+  .md-page pre { background: var(--surface-dark); border-radius: 4px; padding: 16px 20px; overflow-x: auto; margin: 16px 0; }
+  .md-page pre code { background: none; padding: 0; color: var(--on-dark); font-size: 14px; line-height: 1.6; }
+  .md-page blockquote { margin: 16px 0; padding: 4px 16px; color: var(--mute); border-left: 3px solid var(--hairline-strong); background: var(--surface-soft); }
+  .md-page img { max-width: 100%; border-radius: 4px; }
   .md-page hr { border: none; border-top: 1px solid var(--hairline); margin: 40px 0; }
-  .src-note { font-size: 12px; color: var(--ink-muted-48); max-width: 860px; margin: -60px auto 80px; padding: 0 24px; }
-  .src-note a { font-size: 12px; }
+  .src-note { font: 400 14px/2 var(--mono); color: var(--mute); max-width: 860px; margin: -64px auto 80px; padding: 0 24px; }
 
-  /* ==== footer: parchment, dense-link columns ==== */
-  footer.site { background: var(--parchment); color: var(--ink-muted-80); padding: 64px max(24px, calc((100% - 1024px) / 2)) 40px; }
-  footer.site .cols { display: flex; flex-wrap: wrap; gap: 48px; justify-content: space-between; }
-  footer.site .col h4 { font-size: 14px; font-weight: 600; letter-spacing: -0.224px; margin: 0 0 6px; color: var(--ink); }
-  footer.site .col a { display: block; font-size: 12px; line-height: 2; color: var(--ink-muted-80); letter-spacing: -0.12px; }
-  footer.site .col a:hover { color: var(--ink); text-decoration: none; }
-  footer.site .legal { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--hairline); font-size: 12px; color: var(--ink-muted-48); }
+  /* ==== footer: cream, caption-md, hairline top ==== */
+  footer.site { background: var(--canvas); color: var(--body); border-top: 1px solid var(--hairline); padding: 32px max(24px, calc((100% - 1024px) / 2)); }
+  footer.site .cols { display: flex; flex-wrap: wrap; gap: 16px 48px; justify-content: space-between; }
+  footer.site .col h4 { font: 700 14px/2 var(--mono); color: var(--ink); margin: 0 0 4px; }
+  footer.site .col a { display: block; font: 400 14px/2 var(--mono); color: var(--mute); text-decoration: none; }
+  footer.site .col a:hover { color: var(--ink); text-decoration: underline; }
+  footer.site .legal { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--hairline); font: 400 14px/2 var(--mono); color: var(--mute); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
 
   /* ==== responsive ==== */
-  @media (max-width: 833px) {
-    .gnav .links a:not(.keep) { display: none; }
-    .tile { padding: 48px 24px; }
-    .tile-2col { grid-template-columns: 1fr; }
+  @media (max-width: 768px) {
+    .pnav .links a.nl:not(.keep) { display: none; }
+    .section { padding: 48px 24px; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .tui { padding: 48px 16px; }
     .md-page { padding: 40px 20px 72px; }
   }
 </style>
 </head>
 <body>
-<nav class="gnav">
+<nav class="pnav">
+  <a class="wordmark" href="{{ '/' | relative_url }}">basalt_</a>
   <div class="links">
-    <a class="logo keep" href="{{ '/' | relative_url }}">Basalt</a>
-    <a href="{{ '/' | relative_url }}" data-zh="首页" data-en="Home">首页</a>
-    <a href="{{ '/PROJECT-GUIDE/' | relative_url }}" data-zh="项目指南" data-en="Guide">项目指南</a>
-    <a href="{{ '/readme/' | relative_url }}" data-zh="README" data-en="README">README</a>
-    <a href="https://github.com/BS-O/Basalt" class="keep">GitHub</a>
-  </div>
-  <div class="lang-switch" role="group" aria-label="Language">
-    <button type="button" id="lang-zh" class="on">中</button>
-    <button type="button" id="lang-en">EN</button>
+    <a class="nl" href="{{ '/' | relative_url }}" data-zh="首页" data-en="home">首页</a>
+    <a class="nl" href="{{ '/PROJECT-GUIDE/' | relative_url }}" data-zh="指南" data-en="guide">指南</a>
+    <a class="nl" href="{{ '/readme/' | relative_url }}">readme</a>
+    <a class="gh keep" href="https://github.com/BS-O/Basalt">github</a>
+    <div class="lang-switch" role="group" aria-label="language">
+      <button type="button" id="lang-zh" class="on">中</button>
+      <button type="button" id="lang-en">EN</button>
+    </div>
   </div>
 </nav>
 
@@ -179,23 +182,26 @@
 <footer class="site">
   <div class="cols">
     <div class="col">
-      <h4 data-zh="文档" data-en="Docs">文档</h4>
-      <a href="{{ '/PROJECT-GUIDE/' | relative_url }}" data-zh="项目详细指南" data-en="Project Guide">项目详细指南</a>
-      <a href="{{ '/readme/' | relative_url }}" data-zh="README" data-en="README">README</a>
-      <a href="https://github.com/BS-O/Basalt/blob/main/docs/ARCHITECTURE.md" data-zh="架构设计" data-en="Architecture">架构设计</a>
-      <a href="https://github.com/BS-O/Basalt/tree/main/docs/adr" data-zh="决策记录 ADR" data-en="Decision Records">决策记录 ADR</a>
+      <h4 data-zh="文档" data-en="docs">文档</h4>
+      <a href="{{ '/PROJECT-GUIDE/' | relative_url }}" data-zh="项目详细指南" data-en="project guide">项目详细指南</a>
+      <a href="{{ '/readme/' | relative_url }}">readme</a>
+      <a href="https://github.com/BS-O/Basalt/blob/main/docs/ARCHITECTURE.md" data-zh="架构设计" data-en="architecture">架构设计</a>
+      <a href="https://github.com/BS-O/Basalt/tree/main/docs/adr" data-zh="决策记录 ADR" data-en="decision records">决策记录 ADR</a>
     </div>
     <div class="col">
-      <h4 data-zh="仓库" data-en="Repository">仓库</h4>
-      <a href="https://github.com/BS-O/Basalt">GitHub · BS-O/Basalt</a>
-      <a href="https://jihulab.com/BS-O/basalt">极狐 GitLab · BS-O/basalt</a>
+      <h4 data-zh="仓库" data-en="repository">仓库</h4>
+      <a href="https://github.com/BS-O/Basalt">github · BS-O/Basalt</a>
+      <a href="https://jihulab.com/BS-O/basalt">jihulab · BS-O/basalt</a>
     </div>
     <div class="col">
-      <h4 data-zh="里程碑" data-en="Milestones">里程碑</h4>
-      <a href="{{ '/' | relative_url }}">M0 · hello world ✅</a>
+      <h4 data-zh="里程碑" data-en="milestone">里程碑</h4>
+      <a href="{{ '/' | relative_url }}">M0 · hello world [x]</a>
     </div>
   </div>
-  <div class="legal">Basalt（玄武岩）· 自研 x86-64 内核 · Limine Boot Protocol · C++17 / C / GNU as · <span data-zh="© 2026 Basalt 项目" data-en="© 2026 The Basalt Project">© 2026 Basalt 项目</span></div>
+  <div class="legal">
+    <span>©2026 Basalt · x86-64 kernel · Limine Boot Protocol</span>
+    <span data-zh="玄武岩——地壳之下最坚实的那层石头" data-en="basalt — the strongest layer beneath the crust">玄武岩——地壳之下最坚实的那层石头</span>
+  </div>
 </footer>
 
 <script>

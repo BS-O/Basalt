@@ -1,70 +1,71 @@
 ---
 layout: default
-title: Basalt · 从裸机到 hello world 的自研内核
+title: Basalt · 自研 x86-64 内核
 permalink: /
 ---
 
-<!-- ============ hero tile (white) ============ -->
-<section class="tile tile-white">
-  <h1 class="hero-display" data-zh="玄武岩。地壳之下，最坚实的一层。" data-en="Basalt. The strongest layer beneath the crust.">玄武岩。地壳之下，最坚实的一层。</h1>
-  <p class="lead" data-zh="从裸机开始构建的自研 x86-64 内核。Limine 负责固件初始化，内核自身代码从 64 位长模式入口开始，直至在屏幕上画出第一个字符。" data-en="A self-built x86-64 kernel starting from bare metal. Limine handles firmware initialization; the kernel itself begins at the 64-bit long-mode entry, all the way to the first character on screen.">从裸机开始构建的自研 x86-64 内核。Limine 负责固件初始化，内核自身代码从 64 位长模式入口开始，直至在屏幕上画出第一个字符。</p>
-  <p class="fine" data-zh="M0 里程碑已达成 · Limine v12.10.0 · C++17 / C11 / GNU as · make check 全绿" data-en="Milestone M0 achieved · Limine v12.10.0 · C++17 / C11 / GNU as · make check green">M0 里程碑已达成 · Limine v12.10.0 · C++17 / C11 / GNU as · make check 全绿</p>
+<!-- ============ hero section (cream) ============ -->
+<section class="section">
+  <span class="badge-news" data-zh="M0 已达成" data-en="M0 shipped">M0 已达成</span>
+  <h1 class="display-xl" data-zh="玄武岩。地壳之下，最坚实的一层。" data-en="basalt. the strongest layer beneath the crust.">玄武岩。地壳之下，最坚实的一层。</h1>
+  <p class="lead" data-zh="从裸机开始构建的自研 x86-64 内核。Limine 负责固件初始化，内核自身代码从 64 位长模式入口开始，直至在屏幕上画出第一个字符。" data-en="a self-built x86-64 kernel starting from bare metal. limine handles firmware bring-up; the kernel itself begins at the 64-bit long-mode entry, all the way to the first character on screen.">从裸机开始构建的自研 x86-64 内核。Limine 负责固件初始化，内核自身代码从 64 位长模式入口开始，直至在屏幕上画出第一个字符。</p>
+  <p class="fine" data-zh="C++17 / C11 / GNU as · Limine v12.10.0 · WSL2 + QEMU · make check 全绿" data-en="C++17 / C11 / GNU as · Limine v12.10.0 · WSL2 + QEMU · make check green">C++17 / C11 / GNU as · Limine v12.10.0 · WSL2 + QEMU · make check 全绿</p>
 </section>
+<hr class="rule">
 
-<!-- ============ M0 product tile (dark) ============ -->
-<section class="tile tile-dark">
-  <h2 class="display-lg" data-zh="M0：启动，然后说出第一句话。" data-en="M0: boot, then say the first word.">M0：启动，然后说出第一句话。</h2>
-  <p class="lead" data-zh="Limine 完成全部固件初始化；Basalt 的第一行汇编自长模式入口开始。" data-en="Limine does all firmware bring-up; Basalt's first line of assembly starts at the long-mode entry.">Limine 完成全部固件初始化；Basalt 的第一行汇编自长模式入口开始。</p>
-  <img class="render" src="{{ 'assets/m0-screendump.png' | relative_url }}" alt="M0 实拍：QEMU framebuffer 输出 hello world" loading="eager" width="1024" height="768">
-  <div class="term">
-    <div class="bar"><i></i><i></i><i></i></div>
-    <pre><span class="dim">$ make check</span>
-<span class="dim">…timeout 15 qemu-system-x86_64 …</span>
-<span class="ok">CHECK PASSED: hello world on COM1</span>
-
-<span class="dim"># COM1 raw bytes</span>
-<span class="mark">12K</span>hello world
-
-<span class="dim"># 1 = 64-bit entry stub
-# 2 = kernel stack switched
-# K = kmain (C++) took over</span></pre>
-  </div>
-  <p class="fine" data-zh="上：1024×768 framebuffer 主显示 · 下：COM1 串口日志（ADR-003 双通道设计）" data-en="Top: 1024×768 framebuffer display · Bottom: COM1 serial log (ADR-003 dual-channel design)">上：1024×768 framebuffer 主显示 · 下：COM1 串口日志（ADR-003 双通道设计）</p>
-</section>
-
-<!-- ============ features tile (parchment) ============ -->
-<section class="tile tile-parchment">
-  <h2 class="display-lg" data-zh="为什么值得读、值得写。" data-en="Why it's worth reading — and writing.">为什么值得读、值得写。</h2>
-  <p class="lead" data-zh="M0 严格限定"能启动 + hello world"，但工程方法与扩展接口按真实内核的标准预留。" data-en="M0 is strictly scoped to boot + hello world, yet its engineering methods and extension points are reserved to real-kernel standards.">M0 严格限定"能启动 + hello world"，但工程方法与扩展接口按真实内核的标准预留。</p>
-  <div class="tile-2col">
-    <div class="feature">
-      <h3 data-zh="三语言严格分层" data-en="Three languages, strictly layered">三语言严格分层</h3>
-      <p data-zh="汇编只做入口桩，C 守住硬件边界，C++ 只出现在子系统层。跨语言一律 extern &quot;C&quot;，单向依赖——每一层都能单独讲清楚。" data-en="Assembly only at the entry stub; C guards the hardware boundary; C++ lives in subsystem layers. extern &quot;C&quot; across every language boundary, one-way dependencies — each layer explains itself.">汇编只做入口桩，C 守住硬件边界，C++ 只出现在子系统层。跨语言一律 extern "C"，单向依赖——每一层都能单独讲清楚。</p>
-    </div>
-    <div class="feature">
-      <h3 data-zh="headless 可验证" data-en="Verifiable, headless">headless 可验证</h3>
-      <p data-zh="make check 十五秒冒烟断言串口输出；QEMU 监视器 screendump / 寄存器 / 异常日志三板斧定位引导故障——全程无需人工盯屏。" data-en="make check asserts serial output in a 15-second smoke run; QEMU monitor screendump / registers / exception logs pinpoint boot faults — no human staring required.">make check 十五秒冒烟断言串口输出；QEMU 监视器 screendump / 寄存器 / 异常日志三板斧定位引导故障——全程无需人工盯屏。</p>
-    </div>
-    <div class="feature">
-      <h3 data-zh="决策全部留痕" data-en="Every decision on record">决策全部留痕</h3>
-      <p data-zh="引导协议为何从 Multiboot2 改为 Limine、字模为何选 Terminus、arm64 为何只占位——六条 ADR 逐条记录背景、备选与后果。" data-en="Why the boot protocol moved from Multiboot2 to Limine, why Terminus glyphs, why arm64 stays a placeholder — six ADRs record the context, options, and consequences.">引导协议为何从 Multiboot2 改为 Limine、字模为何选 Terminus、arm64 为何只占位——六条 ADR 逐条记录背景、备选与后果。</p>
-    </div>
-    <div class="feature">
-      <h3 data-zh="配额治理" data-en="Quota governance">配额治理</h3>
-      <p data-zh="开源组件登记制：Limine 头文件（BSD-2）+ Terminus 字模（OFL 1.1），合计 &lt;2%，上限 25%；vendored 原始包带 SHA256 校验记录。" data-en="Registered open-source components: Limine headers (BSD-2) + Terminus glyphs (OFL 1.1), under 2% combined against a 25% cap; vendored archives carry SHA256 records.">开源组件登记制：Limine 头文件（BSD-2）+ Terminus 字模（OFL 1.1），合计 <2%，上限 25%；vendored 原始包带 SHA256 校验记录。</p>
-    </div>
+<!-- ============ hero TUI mockup (the single dark surface) ============ -->
+<section class="tui">
+  <pre class="ascii-wm">
+ ▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄  ▄▄▄      ▄▄▄
+ ███      ██ ███      ██ ███      ██ ███      ███
+ ███      ██ ███      ██ ███      ██ ███      ███
+ ████████████ ███      ██ ██████████▀  ███      ███
+ ███      ██ ███      ██ ███  ▄▄▄▄▄   ███▄▄▄▄▄▄██
+ ███      ██ ████████████ ███  ▀▀▀▀▀   ▀▀▀▀▀▀▀▀▀
+      b a s a l t   k e r n e l   m 0</pre>
+  <div class="prompt-row"><span class="pipe">|</span> boot <span class="model">[Limine v12.10.0]</span> <span class="dim">SeaBIOS → long mode → kmain</span></div>
+  <div class="hints">
+    <span class="ok">CHECK PASSED: hello world on COM1</span><br>
+    <span class="mark">12K</span>hello world<br>
+    <span class="dim"># 1 = entry stub · 2 = stack switch · K = kmain (C++) took over</span>
   </div>
 </section>
 
-<!-- ============ docs tile (white) ============ -->
-<section class="tile tile-white">
-  <h2 class="display-lg" data-zh="从这里开始读。" data-en="Start reading here.">从这里开始读。</h2>
-  <div class="doc-links">
-    <a href="{{ '/PROJECT-GUIDE/' | relative_url }}" data-zh="项目详细指南 →" data-en="Project Guide →">项目详细指南 →</a>
-    <a href="{{ '/readme/' | relative_url }}" data-zh="README →" data-en="README →">README →</a>
-    <a href="https://github.com/BS-O/Basalt/blob/main/docs/ARCHITECTURE.md" data-zh="架构设计（GitHub）→" data-en="Architecture (GitHub) →">架构设计（GitHub）→</a>
-    <a href="https://github.com/BS-O/Basalt/tree/main/docs/adr" data-zh="决策记录 ADR-001~006（GitHub）→" data-en="Decision Records ADR-001~006 (GitHub) →">决策记录 ADR-001~006（GitHub）→</a>
-    <a href="https://github.com/BS-O/Basalt" data-zh="GitHub 仓库 →" data-en="GitHub repository →">GitHub 仓库 →</a>
+<!-- ============ features (list rows, ASCII markers) ============ -->
+<section class="section">
+  <h2 class="heading-md" data-zh="[*] 为什么值得读、值得写" data-en="[*] why it's worth reading — and writing">[*] 为什么值得读、值得写</h2>
+  <div class="grid-2" style="margin-top:16px">
+    <div>
+      <span class="list-row"><span class="marker">[+]</span><b data-zh="三语言严格分层" data-en="three languages, strictly layered">三语言严格分层</b><br><span data-zh="汇编只做入口桩，C 守硬件边界，C++ 只出现在子系统层；跨语言一律 extern &quot;C&quot;。" data-en="asm at the entry stub only, C guards hardware, C++ in subsystems; extern &quot;C&quot; at every boundary.">汇编只做入口桩，C 守硬件边界，C++ 只出现在子系统层；跨语言一律 extern "C"。</span></span>
+      <span class="list-row"><span class="marker">[+]</span><b data-zh="headless 可验证" data-en="verifiable, headless">headless 可验证</b><br><span data-zh="make check 十五秒冒烟断言串口输出，全程无需人工盯屏。" data-en="make check asserts serial output in a 15s smoke run; no human staring required.">make check 十五秒冒烟断言串口输出，全程无需人工盯屏。</span></span>
+    </div>
+    <div>
+      <span class="list-row"><span class="marker">[+]</span><b data-zh="决策全部留痕" data-en="every decision on record">决策全部留痕</b><br><span data-zh="六条 ADR 记录引导协议、字模、工具链等决策的背景、备选与后果。" data-en="six ADRs record context, options, and consequences for every decision.">六条 ADR 记录引导协议、字模、工具链等决策的背景、备选与后果。</span></span>
+      <span class="list-row"><span class="marker">[+]</span><b data-zh="配额治理" data-en="quota governance">配额治理</b><br><span data-zh="开源组件登记制：Limine 头文件（BSD-2）+ Terminus 字模（OFL 1.1），合计 &lt;2%，上限 25%。" data-en="registered components: Limine headers (BSD-2) + Terminus glyphs (OFL 1.1), &lt;2% combined under a 25% cap.">开源组件登记制：Limine 头文件（BSD-2）+ Terminus 字模（OFL 1.1），合计 <2%，上限 25%。</span></span>
+    </div>
   </div>
-  <p class="fine" data-zh="范围纪律：M0 = 能启动 + 输出 hello world。进程、文件系统、网络、驱动等完整内核功能一律不在当前里程碑，arm64 仅做占位预留。" data-en="Scope discipline: M0 = boots + prints hello world. Processes, filesystems, networking, drivers are all out of this milestone; arm64 remains a placeholder.">范围纪律：M0 = 能启动 + 输出 hello world。进程、文件系统、网络、驱动等完整内核功能一律不在当前里程碑，arm64 仅做占位预留。</p>
+</section>
+<hr class="rule">
+
+<!-- ============ install/snippet grammar: build & run ============ -->
+<section class="section-tight">
+  <h2 class="heading-md" data-zh="[$] 三秒上手" data-en="[$] up in three commands">[$] 三秒上手</h2>
+  <div class="snippet">$ cd /mnt/d/Basalt<span class="dim">        # WSL2 Debian</span>
+$ make && make iso<span class="dim">      # kernel ELF → bootable ISO</span>
+$ make check<span class="dim">             # </span><span class="ok">CHECK PASSED: hello world on COM1</span></div>
+  <p class="fine" data-zh="一切构建与运行均在模拟器/隔离环境中，不写真实磁盘引导区。" data-en="everything builds and runs inside an emulator/sandbox; no real disk or boot sector is ever touched.">一切构建与运行均在模拟器/隔离环境中，不写真实磁盘引导区。</p>
+</section>
+<hr class="rule">
+
+<!-- ============ docs (list rows) ============ -->
+<section class="section-tight">
+  <h2 class="heading-md" data-zh="[#] 从这里开始读" data-en="[#] start reading here">[#] 从这里开始读</h2>
+  <div class="doc-links" style="margin-top:16px">
+    <a href="{{ '/PROJECT-GUIDE/' | relative_url }}"><span class="marker">→</span><span data-zh="项目详细指南" data-en="project guide">项目详细指南</span></a>
+    <a href="{{ '/readme/' | relative_url }}"><span class="marker">→</span>readme</a>
+    <a href="https://github.com/BS-O/Basalt/blob/main/docs/ARCHITECTURE.md"><span class="marker">→</span><span data-zh="架构设计（GitHub）" data-en="architecture (github)">架构设计（GitHub）</span></a>
+    <a href="https://github.com/BS-O/Basalt/tree/main/docs/adr"><span class="marker">→</span><span data-zh="决策记录 ADR-001~006" data-en="decision records ADR-001~006">决策记录 ADR-001~006</span></a>
+    <a href="https://github.com/BS-O/Basalt"><span class="marker">→</span><span data-zh="GitHub 仓库" data-en="github repository">GitHub 仓库</span></a>
+  </div>
+  <p class="fine" data-zh="范围纪律：M0 = 能启动 + 输出 hello world。进程、文件系统、网络、驱动等完整内核功能一律不在当前里程碑，arm64 仅做占位预留。" data-en="scope discipline: M0 = boots + prints hello world. processes, filesystems, networking, drivers are all out; arm64 stays a placeholder.">范围纪律：M0 = 能启动 + 输出 hello world。进程、文件系统、网络、驱动等完整内核功能一律不在当前里程碑，arm64 仅做占位预留。</p>
 </section>
