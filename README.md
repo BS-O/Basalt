@@ -54,6 +54,8 @@ shell 命令：`help` `ver` `clear` `echo` `meminfo` `plugins` `halt`。
 
 ## 文档
 
+- [AGENTS.md](AGENTS.md) —— AI 编码工具入口（opencode/Pi/trae/zcode 等自动读取）
+- [docs/AGENT-HANDBOOK.md](docs/AGENT-HANDBOOK.md) —— 交接手册：完整背景、踩坑实录、路线图（后续开发者的主通道）
 - [docs/PROJECT-GUIDE.md](docs/PROJECT-GUIDE.md) —— 每个文件的用途与用法
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) —— 分层架构与引导链路
 - [docs/TASK-SPEC.md](docs/TASK-SPEC.md) —— 任务书 v2（Limine 修订版）
