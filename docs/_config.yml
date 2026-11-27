@@ -1,7 +1,8 @@
 # Jekyll configuration for Basalt GitHub Pages (docs/ as site root)
-title: Basalt OS
+title: BasaltCore
 description: >-
-  自研 x86-64 内核：Limine 引导，M0 已在 framebuffer 与串口上输出 hello world
+  自研 x86-64 内核（教学/研究）：Limine 引导，M1 已达成——位图 PMM、初代 Unix 风启动日志、
+  framebuffer shell（bsh）与 BSPL 插件机制，未来生长出 basalt 插件生态
 lang: zh-CN
 permalink: pretty
 markdown: kramdown
