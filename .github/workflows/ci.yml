@@ -48,3 +48,11 @@ jobs:
             build/serial.log
             build/qemu-int.log
           if-no-files-found: ignore
+
+      - name: upload kernel elf
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kernel-elf
+          path: build/basalt.elf
+          if-no-files-found: ignore
