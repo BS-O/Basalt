@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  kernel-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential xorriso qemu-system-x86 python3
+
+      - name: build kernel
+        run: make
+
+      - name: build iso
+        run: make iso
+
+      - name: smoke test (COM1 boot log)
+        run: make check
+
+      - name: serial log
+        if: always()
+        run: cat build/serial.log || true
+
+      - name: upload serial log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: serial-log
+          path: build/serial.log
+          if-no-files-found: ignore

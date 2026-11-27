@@ -1,5 +1,7 @@
 # BasaltCore
 
+[![ci](https://github.com/BS-O/Basalt/actions/workflows/ci.yml/badge.svg)](https://github.com/BS-O/Basalt/actions/workflows/ci.yml)
+
 **玄武岩——地壳之下最坚实的那层石头。**
 
 BasaltCore 是 **Basalt 系统的核心内核**：一个从裸机开始构建的自研 x86-64 内核（教学/研究项目）。它只是整个 Basalt 生态的地基——**未来将上线 Basalt 插件体系**（basalt plugin），内核本体保持小而坚实。
@@ -54,6 +56,8 @@ shell 命令：`help` `ver` `clear` `echo` `meminfo` `plugins` `halt`。
 
 ## 文档
 
+- [AGENTS.md](AGENTS.md) —— AI 编码工具入口（opencode/Pi/trae/zcode 等自动读取）
+- [docs/AGENT-HANDBOOK.md](https://github.com/BS-O/Basalt/blob/main/docs/AGENT-HANDBOOK.md) —— 交接手册：完整背景、踩坑实录、路线图（后续开发者的主通道）
 - [docs/PROJECT-GUIDE.md](https://github.com/BS-O/Basalt/blob/main/docs/PROJECT-GUIDE.md) —— 每个文件的用途与用法
 - [docs/ARCHITECTURE.md](https://github.com/BS-O/Basalt/blob/main/docs/ARCHITECTURE.md) —— 分层架构与引导链路
 - [docs/TASK-SPEC.md](https://github.com/BS-O/Basalt/blob/main/docs/TASK-SPEC.md) —— 任务书 v2（Limine 修订版）

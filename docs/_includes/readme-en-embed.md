@@ -1,5 +1,7 @@
 # BasaltCore
 
+[![ci](https://github.com/BS-O/Basalt/actions/workflows/ci.yml/badge.svg)](https://github.com/BS-O/Basalt/actions/workflows/ci.yml)
+
 > Read this page in Chinese: [README.md](https://basalt.bsct.top/readme/) · English version on the site: <https://basalt.bsct.top/readme/en/>
 
 **Basalt — the strongest layer of stone beneath the earth's crust.**
