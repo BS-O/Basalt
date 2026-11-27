@@ -111,10 +111,12 @@ $(PLUGIN): tools/bplugin.py
 
 # headless smoke test: pass if the M1 boot log reaches the shell banner
 # (25s: QEMU + SeaBIOS occasionally needs >15s on a loaded host; a real hang
-# still fails, just later)
+# still fails, just later). CI overrides CHECK_TIMEOUT for slow TCG runners.
+CHECK_TIMEOUT ?= 25
+
 check: $(ISO)
 	@rm -f $(BUILD)/serial.log
-	@timeout 25 $(QEMU) -M pc -m 256M -cdrom $(ISO) -display none \
+	@timeout $(CHECK_TIMEOUT) $(QEMU) -M pc -m 256M -cdrom $(ISO) -display none \
 	    -serial file:$(BUILD)/serial.log -no-reboot || true
 	@grep -q "BasaltCore is ready" $(BUILD)/serial.log \
 	    && grep -q "plugins" $(BUILD)/serial.log \

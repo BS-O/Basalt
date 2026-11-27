@@ -25,7 +25,15 @@ jobs:
         run: make iso
 
       - name: smoke test (COM1 boot log)
-        run: make check
+        run: make check CHECK_TIMEOUT=90
+
+      - name: boot diagnostics (on failure)
+        if: failure()
+        run: |
+          timeout 40 qemu-system-x86_64 -M pc -m 256M -cdrom build/basalt.iso \
+            -display none -serial file:build/serial-diag.log -no-reboot \
+            -d int,guest_errors -D build/qemu-int.log || true
+          head -60 build/qemu-int.log || true
 
       - name: serial log
         if: always()
@@ -36,5 +44,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: serial-log
-          path: build/serial.log
+          path: |
+            build/serial.log
+            build/qemu-int.log
           if-no-files-found: ignore
