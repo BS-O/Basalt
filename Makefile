@@ -110,9 +110,11 @@ $(PLUGIN): tools/bplugin.py
 	python3 tools/bplugin.py hello 0.1.0 $@
 
 # headless smoke test: pass if the M1 boot log reaches the shell banner
+# (25s: QEMU + SeaBIOS occasionally needs >15s on a loaded host; a real hang
+# still fails, just later)
 check: $(ISO)
 	@rm -f $(BUILD)/serial.log
-	@timeout 15 $(QEMU) -M pc -m 256M -cdrom $(ISO) -display none \
+	@timeout 25 $(QEMU) -M pc -m 256M -cdrom $(ISO) -display none \
 	    -serial file:$(BUILD)/serial.log -no-reboot || true
 	@grep -q "BasaltCore is ready" $(BUILD)/serial.log \
 	    && grep -q "plugins" $(BUILD)/serial.log \

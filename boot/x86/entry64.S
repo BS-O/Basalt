@@ -5,8 +5,9 @@
  * kernel mapped (see ADR-002). We only set up our own stack and hand over
  * to the C++ kernel entry point.
  *
- * Serial markers ('1','2','3') are written raw to COM1 for boot debugging;
- * they are harmless and stay for M0 diagnostics.
+ * Boot-stage probes from M0 ('1' on entry, '2' after the stack switch) were
+ * removed once make check started asserting on the real boot log; kmain still
+ * emits a single 'K' marker (dbg_mark) before the console is up.
  */
 
 .section .text.boot, "ax", @progbits
@@ -14,28 +15,9 @@
 boot_entry:
     cli
 
-    /* debug marker: raw COM1 write */
-    movq    $0x3f8, %rdx
-1:  movl    $0x3fd, %edx
-    inb     %dx, %al
-    testb   $0x20, %al
-    jz      1b
-    movl    $0x3f8, %edx
-    movb    $'1', %al
-    outb    %al, %dx
-
     /* switch to our own stack (.bss, 16 KiB, 16-byte aligned) */
     movabsq $boot_stack_top, %rsp
     xorq  %rbp, %rbp
-
-    /* debug marker 2: stack switched */
-    movl    $0x3fd, %edx
-2:  inb     %dx, %al
-    testb   $0x20, %al
-    jz      2b
-    movl    $0x3f8, %edx
-    movb    $'2', %al
-    outb    %al, %dx
 
     /* arg1 (rdi) = framebuffer request (Limine filled in ->response) */
     lea   framebuffer_request(%rip), %rdi

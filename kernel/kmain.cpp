@@ -56,9 +56,9 @@ extern "C" void kmain(struct limine_framebuffer_request *fb_request)
     /* ---- memory ---- */
     uint64_t usable = pmm_init();
     if (usable) {
-        kprintf("mem     : usable %u KiB, %u frames managed by bitmap PMM (hhdm +0x%x)\n",
+        kprintf("mem     : usable %u KiB, %u frames managed by bitmap PMM (hhdm +0x%lx)\n",
                 (unsigned)(usable), (unsigned)pmm_total_frames(),
-                (unsigned)pmm_hhdm_offset());
+                (unsigned long long)pmm_hhdm_offset());
     } else {
         kprintf("mem     : WARNING - no usable memory map found, PMM offline\n");
     }

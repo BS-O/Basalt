@@ -27,10 +27,9 @@ void init(const fb_info *info)
         fb_init(info->address, info->width, info->height, info->pitch,
                 info->bpp, info->memory_model);
         if (!fb_ok())
-            serial_putc('!');
-    } else {
-        serial_putc('!'); /* serial-only marker (no usable framebuffer) */
+            serial_putc('!'); /* framebuffer init failed, serial-only fallback */
     }
+    /* info == nullptr: serial-only bootstrap pass, no marker needed */
 }
 
 void putc(char c)
